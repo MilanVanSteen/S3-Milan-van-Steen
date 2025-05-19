@@ -14,11 +14,11 @@ public class CalendarContainer {
         this.repo = _repo;
     }
 
-    public List<Calendar> getAllCalendars() {
+    public List<Calendar> GetAllCalendars() {
         return CalendarMapper.toModelList((List<CalendarDTO>)repo.findAll());
     }
 
-    public Calendar getCalendarById(int calendarID) {
+    public Calendar GetCalendarById(int calendarID) {
         return CalendarMapper.toModel(repo.findById(calendarID).orElse(null));
     }
 

@@ -14,11 +14,11 @@ public class EventContainer {
         this.repo = _repo;
     }
 
-    public List<Event> getAllEvents() {
+    public List<Event> GetAllEvents() {
         return EventMapper.toModelList((List<EventDTO>)repo.findAll());
     }
 
-    public Event getEventById(int eventID) {
+    public Event GetEventById(int eventID) {
         return EventMapper.toModel(repo.findById(eventID).orElse(null));
     }
 

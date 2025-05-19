@@ -14,11 +14,11 @@ public class CategoryContainer {
         this.repo = _repo;
     }
 
-    public List<Category> getAllCategories() {
+    public List<Category> GetAllCategories() {
         return CategoryMapper.toModelList((List<CategoryDTO>)repo.findAll());
     }
 
-    public Category getCategoryById(int categoryID) {
+    public Category GetCategoryById(int categoryID) {
         return CategoryMapper.toModel(repo.findById(categoryID).orElse(null));
     }
 

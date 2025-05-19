@@ -14,11 +14,11 @@ public class UserContainer {
         this.repo = _repo;
     }
 
-    public List<User> getAllUsers() {
+    public List<User> GetAllUsers() {
         return UserMapper.toModelList((List<UserDTO>)repo.findAll());
     }
 
-    public User getUserById(int userID) {
+    public User GetUserById(int userID) {
         return UserMapper.toModel(repo.findById(userID).orElse(null));
     }
 
