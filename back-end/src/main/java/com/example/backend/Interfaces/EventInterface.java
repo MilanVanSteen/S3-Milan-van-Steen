@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EventInterface extends CrudRepository<EventDTO, String> {
+public interface EventInterface extends CrudRepository<EventDTO, Integer> {
 }

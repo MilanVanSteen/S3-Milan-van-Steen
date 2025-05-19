@@ -1,11 +1,13 @@
 package com.example.backend.DTOs;
 
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
 @Getter
 public class EventDTO {
+    @Id
     private int EventID;
     private int UserID;
     private String Name;
