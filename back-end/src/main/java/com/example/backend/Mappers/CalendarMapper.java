@@ -3,6 +3,9 @@ package com.example.backend.Mappers;
 import com.example.backend.DTOs.CalendarDTO;
 import com.example.backend.Models.Calendar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CalendarMapper {
     public static CalendarDTO toDTO(Calendar calendar) {
         if(calendar == null){
@@ -16,5 +19,23 @@ public class CalendarMapper {
             return null;
         }
         return new Calendar(calendarDTO.getCalendarID(), calendarDTO.getUserID(), calendarDTO.isIsPersonal());
+    }
+
+    public static List<CalendarDTO> toDTOList(List<Calendar> calendars) {
+        if (calendars == null) {
+            return new ArrayList<>();
+        }
+        return calendars.stream()
+                .map(CalendarMapper::toDTO)
+                .toList();
+    }
+
+    public static List<Calendar> toModelList(List<CalendarDTO> calendarDTOS) {
+        if (calendarDTOS == null) {
+            return new ArrayList<>();
+        }
+        return calendarDTOS.stream()
+                .map(CalendarMapper::toModel)
+                .toList();
     }
 }
