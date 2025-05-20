@@ -15,6 +15,7 @@ public class UserController {
         this.userContainer = new UserContainer(userInterface);
     }
 
+    @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> GetAllUsers() {
         List<User> users = userContainer.GetAllUsers();
         if (users == null || !users.iterator().hasNext()) {
@@ -24,6 +25,7 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getUserById")
     public ResponseEntity<User> GetUserById(@RequestParam int userID) {
         User user = userContainer.GetUserById(userID);
         if (user != null) {
@@ -32,11 +34,13 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/createUser")
     public ResponseEntity<User> CreateUser(@RequestBody User user) {
         User createdUser = userContainer.CreateUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
+    @GetMapping("/deleteUser")
     public ResponseEntity<String> DeleteUser(@RequestParam int userID) {
         if (userContainer.DeleteUser(userID)){
             return ResponseEntity.ok("Deleted user");

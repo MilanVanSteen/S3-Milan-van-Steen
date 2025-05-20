@@ -4,6 +4,7 @@ import com.example.backend.Containers.CalendarContainer;
 import com.example.backend.Interfaces.CalendarInterface;
 import com.example.backend.Models.Calendar;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,6 +17,7 @@ public class CalendarController {
         this.calendarContainer = new CalendarContainer(calendarInterface);
     }
 
+    @GetMapping("/getAllCalendars")
     public ResponseEntity<List<Calendar>> GetAllCalendars() {
         List<Calendar> calendars = calendarContainer.GetAllCalendars();
         if (calendars == null || !calendars.iterator().hasNext()) {
@@ -25,6 +27,7 @@ public class CalendarController {
         }
     }
 
+    @GetMapping("/getCalendarById")
     public ResponseEntity<Calendar> GetCalendarById(@RequestParam int calendarID) {
         Calendar calendar = calendarContainer.GetCalendarById(calendarID);
         if (calendar != null) {
@@ -33,11 +36,13 @@ public class CalendarController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/createCalendar")
     public ResponseEntity<Calendar> CreateCalendar(@RequestBody Calendar calendar) {
         Calendar createdCalendar = calendarContainer.CreateCalendar(calendar);
         return ResponseEntity.ok(createdCalendar);
     }
 
+    @GetMapping("/deleteCalendar")
     public ResponseEntity<String> DeleteCalendar(@RequestParam int calendarID) {
         if (calendarContainer.DeleteCalendar(calendarID)){
             return ResponseEntity.ok("Deleted calendar");

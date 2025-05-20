@@ -4,6 +4,7 @@ import com.example.backend.Containers.CategoryContainer;
 import com.example.backend.Interfaces.CategoryInterface;
 import com.example.backend.Models.Category;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,6 +17,7 @@ public class CategoryController {
         this.categoryContainer = new CategoryContainer(categoryInterface);
     }
 
+    @GetMapping("/getAllCategories")
     public ResponseEntity<List<Category>> GetAllCategories() {
         List<Category> categories = categoryContainer.GetAllCategories();
         if (categories == null || !categories.iterator().hasNext()) {
@@ -25,6 +27,7 @@ public class CategoryController {
         }
     }
 
+    @GetMapping("/getCategoryById")
     public ResponseEntity<Category> GetCategoryById(@RequestParam int categoryID) {
         Category category = categoryContainer.GetCategoryById(categoryID);
         if (category != null) {
@@ -33,11 +36,13 @@ public class CategoryController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/createCategory")
     public ResponseEntity<Category> CreateCategory(@RequestBody Category category) {
         Category createdCategory = categoryContainer.CreateCategory(category);
         return ResponseEntity.ok(createdCategory);
     }
 
+    @GetMapping("/deleteCategory")
     public ResponseEntity<String> DeleteCategory(@RequestParam int categoryID) {
         if (categoryContainer.DeleteCategory(categoryID)){
             return ResponseEntity.ok("Deleted category");

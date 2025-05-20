@@ -4,6 +4,7 @@ import com.example.backend.Containers.EventContainer;
 import com.example.backend.Interfaces.EventInterface;
 import com.example.backend.Models.Event;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,6 +17,7 @@ public class EventController {
         this.eventContainer = new EventContainer(eventInterface);
     }
 
+    @GetMapping("/getAllEvents")
     public ResponseEntity<List<Event>> GetAllEvents() {
         List<Event> events = eventContainer.GetAllEvents();
         if (events == null || !events.iterator().hasNext()) {
@@ -25,6 +27,7 @@ public class EventController {
         }
     }
 
+    @GetMapping("/getEventById")
     public ResponseEntity<Event> GetEventById(@RequestParam int eventID) {
         Event event = eventContainer.GetEventById(eventID);
         if (event != null) {
@@ -33,11 +36,13 @@ public class EventController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/createEvent")
     public ResponseEntity<Event> CreateEvent(@RequestBody Event event) {
         Event createdEvent = eventContainer.CreateEvent(event);
         return ResponseEntity.ok(createdEvent);
     }
 
+    @GetMapping("/deleteEvent")
     public ResponseEntity<String> DeleteEvent(@RequestParam int eventID) {
         if (eventContainer.DeleteEvent(eventID)){
             return ResponseEntity.ok("Deleted event");
