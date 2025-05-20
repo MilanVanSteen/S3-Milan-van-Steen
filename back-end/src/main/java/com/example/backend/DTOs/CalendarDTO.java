@@ -1,8 +1,9 @@
 package com.example.backend.DTOs;
 
+import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
+@Entity
 @Getter
 public class CalendarDTO {
     @Id
@@ -14,5 +15,9 @@ public class CalendarDTO {
         this.CalendarID = calendarID;
         this.UserID = userID;
         this.IsPersonal = isPersonal;
+    }
+
+    public CalendarDTO() {
+
     }
 }

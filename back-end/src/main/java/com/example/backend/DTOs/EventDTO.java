@@ -1,10 +1,11 @@
 package com.example.backend.DTOs;
 
+import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 public class EventDTO {
     @Id
@@ -20,5 +21,9 @@ public class EventDTO {
         this.Name = name;
         this.StartDate = startDate;
         this.EndDate = endDate;
+    }
+
+    public EventDTO() {
+
     }
 }

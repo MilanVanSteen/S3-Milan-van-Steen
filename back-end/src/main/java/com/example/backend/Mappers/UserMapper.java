@@ -5,7 +5,6 @@ import com.example.backend.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 public class UserMapper {
     public static UserDTO toDTO(User user) {

@@ -3,14 +3,18 @@ package com.example.backend.Controllers;
 import com.example.backend.Containers.UserContainer;
 import com.example.backend.Interfaces.UserInterface;
 import com.example.backend.Models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/user")
 public class UserController {
     private final UserContainer userContainer;
 
+    @Autowired
     public UserController(UserInterface userInterface) {
         this.userContainer = new UserContainer(userInterface);
     }
@@ -34,13 +38,13 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/createUser")
+    @PostMapping("/createUser")
     public ResponseEntity<User> CreateUser(@RequestBody User user) {
         User createdUser = userContainer.CreateUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
-    @GetMapping("/deleteUser")
+    @DeleteMapping("/deleteUser")
     public ResponseEntity<String> DeleteUser(@RequestParam int userID) {
         if (userContainer.DeleteUser(userID)){
             return ResponseEntity.ok("Deleted user");

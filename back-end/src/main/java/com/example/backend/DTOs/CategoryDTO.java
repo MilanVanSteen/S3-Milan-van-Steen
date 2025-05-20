@@ -1,8 +1,9 @@
 package com.example.backend.DTOs;
 
+import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
+@Entity
 @Getter
 public class CategoryDTO {
     @Id
@@ -12,5 +13,9 @@ public class CategoryDTO {
     public CategoryDTO(int categoryID, String name) {
         this.CategoryID = categoryID;
         this.Name = name;
+    }
+
+    public CategoryDTO() {
+
     }
 }
