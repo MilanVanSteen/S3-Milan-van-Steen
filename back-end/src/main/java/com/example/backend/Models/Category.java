@@ -1,14 +1,16 @@
 package com.example.backend.Models;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Category {
-    private int CategoryID;
-    private String Name;
+    private int categoryID;
+    private String name;
 
     public Category(int categoryID, String name) {
-        this.CategoryID = categoryID;
-        this.Name = name;
+        this.categoryID = categoryID;
+        this.name = name;
     }
 }

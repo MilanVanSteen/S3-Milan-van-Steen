@@ -1,0 +1,30 @@
+###
+GET http://localhost:8080/event/getAllEvents
+
+###
+POST http://localhost:8080/event/createEvent
+Content-Type: application/json
+
+{
+  "eventID": 1,
+  "userID": 1,
+  "name": "TestEvent",
+  "startDate": "",
+  "endDate": "",
+  "categories": []
+}
+
+<> 2025-05-20T121010.200.json
+<> 2025-05-20T120947.200.json
+
+###
+GET http://localhost:8080/event/getEventById?
+    eventID=1
+
+<> 2025-05-20T120959.200.json
+
+###
+DELETE http://localhost:8080/event/deleteEvent?
+    eventID=1
+
+<> 2025-05-20T121005.200.txt

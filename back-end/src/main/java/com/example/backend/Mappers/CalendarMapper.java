@@ -11,7 +11,7 @@ public class CalendarMapper {
         if(calendar == null){
             return null;
         }
-        return new CalendarDTO(calendar.getCalendarID(), calendar.getUserID(), calendar.isIsPersonal());
+        return new CalendarDTO(calendar.getCalendarID(), calendar.getUserID(), calendar.isPersonal());
     }
 
     public static Calendar toModel(CalendarDTO calendarDTO) {

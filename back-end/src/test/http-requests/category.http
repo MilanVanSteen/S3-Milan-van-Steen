@@ -1,0 +1,26 @@
+###
+GET http://localhost:8080/category/getAllCategories
+
+###
+POST http://localhost:8080/category/createCategory
+Content-Type: application/json
+
+{
+  "categoryID": 1,
+  "name": "Test"
+}
+
+<> 2025-05-20T121015.200.json
+<> 2025-05-20T120744.200.json
+
+###
+GET http://localhost:8080/category/getCategoryById?
+    categoryID=1
+
+<> 2025-05-20T120818.200.json
+
+###
+DELETE http://localhost:8080/category/deleteCategory?
+    categoryID=1
+
+<> 2025-05-20T120827.200.txt

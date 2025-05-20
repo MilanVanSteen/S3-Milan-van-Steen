@@ -1,20 +1,22 @@
 package com.example.backend.Models;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 public class Calendar {
-    private int CalendarID;
-    private int UserID;
-    private boolean IsPersonal;
+    private int calendarID;
+    private int userID;
+    private boolean isPersonal;
     private List<Event> events;
 
     public Calendar(int calendarID, int userID, boolean isPersonal) {
-        this.CalendarID = calendarID;
-        this.UserID = userID;
-        this.IsPersonal = isPersonal;
+        this.calendarID = calendarID;
+        this.userID = userID;
+        this.isPersonal = isPersonal;
     }
 
     public List<Event> GetCalendarEvents(){

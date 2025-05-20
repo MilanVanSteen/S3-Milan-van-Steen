@@ -1,0 +1,28 @@
+###
+GET http://localhost:8080/calendar/getAllCalendars
+
+###
+POST http://localhost:8080/calendar/createCalendar
+Content-Type: application/json
+
+{
+  "calendarID": 1,
+  "userID": 1,
+  "isPersonal": false,
+  "events": []
+}
+
+<> 2025-05-20T121012.200.json
+<> 2025-05-20T120902.200.json
+
+###
+GET http://localhost:8080/calendar/getCalendarById?
+    calendarID=1
+
+<> 2025-05-20T120916.200.json
+
+###
+DELETE http://localhost:8080/calendar/deleteCalendar?
+    calendarID=1
+
+<> 2025-05-20T120923.200.txt

@@ -3,16 +3,18 @@ package com.example.backend.Controllers;
 import com.example.backend.Containers.EventContainer;
 import com.example.backend.Interfaces.EventInterface;
 import com.example.backend.Models.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/event")
 public class EventController {
     private final EventContainer eventContainer;
 
+    @Autowired
     public EventController(EventInterface eventInterface) {
         this.eventContainer = new EventContainer(eventInterface);
     }
@@ -36,13 +38,13 @@ public class EventController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/createEvent")
+    @PostMapping("/createEvent")
     public ResponseEntity<Event> CreateEvent(@RequestBody Event event) {
         Event createdEvent = eventContainer.CreateEvent(event);
         return ResponseEntity.ok(createdEvent);
     }
 
-    @GetMapping("/deleteEvent")
+    @DeleteMapping("/deleteEvent")
     public ResponseEntity<String> DeleteEvent(@RequestParam int eventID) {
         if (eventContainer.DeleteEvent(eventID)){
             return ResponseEntity.ok("Deleted event");

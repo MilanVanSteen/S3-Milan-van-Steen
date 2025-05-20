@@ -1,25 +1,27 @@
 package com.example.backend.Models;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 public class Event {
-    private int EventID;
-    private int UserID;
-    private String Name;
-    private LocalDateTime StartDate;
-    private LocalDateTime EndDate;
+    private int eventID;
+    private int userID;
+    private String name;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private List<Category> categories;
 
     public Event(int eventID, int userID, String name, LocalDateTime startDate, LocalDateTime endDate) {
-        this.EventID = eventID;
-        this.UserID = userID;
-        this.Name = name;
-        this.StartDate = startDate;
-        this.EndDate = endDate;
+        this.eventID = eventID;
+        this.userID = userID;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public List<Category> GetEventCategories(){

@@ -3,16 +3,18 @@ package com.example.backend.Controllers;
 import com.example.backend.Containers.CalendarContainer;
 import com.example.backend.Interfaces.CalendarInterface;
 import com.example.backend.Models.Calendar;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/calendar")
 public class CalendarController {
     private final CalendarContainer calendarContainer;
 
+    @Autowired
     public CalendarController(CalendarInterface calendarInterface) {
         this.calendarContainer = new CalendarContainer(calendarInterface);
     }
@@ -36,13 +38,13 @@ public class CalendarController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/createCalendar")
+    @PostMapping("/createCalendar")
     public ResponseEntity<Calendar> CreateCalendar(@RequestBody Calendar calendar) {
         Calendar createdCalendar = calendarContainer.CreateCalendar(calendar);
         return ResponseEntity.ok(createdCalendar);
     }
 
-    @GetMapping("/deleteCalendar")
+    @DeleteMapping("/deleteCalendar")
     public ResponseEntity<String> DeleteCalendar(@RequestParam int calendarID) {
         if (calendarContainer.DeleteCalendar(calendarID)){
             return ResponseEntity.ok("Deleted calendar");
