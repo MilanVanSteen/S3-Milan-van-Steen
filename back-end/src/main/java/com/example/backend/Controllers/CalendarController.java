@@ -1,6 +1,7 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.CalendarContainer;
+import com.example.backend.Interfaces.CalendarEventInterface;
 import com.example.backend.Interfaces.CalendarInterface;
 import com.example.backend.Models.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class CalendarController {
     private final CalendarContainer calendarContainer;
 
     @Autowired
-    public CalendarController(CalendarInterface calendarInterface) {
-        this.calendarContainer = new CalendarContainer(calendarInterface);
+    public CalendarController(CalendarInterface calendarInterface, CalendarEventInterface calendarEventInterface) {
+        this.calendarContainer = new CalendarContainer(calendarInterface, calendarEventInterface);
     }
 
     @GetMapping("/getAllCalendars")

@@ -1,6 +1,7 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.EventContainer;
+import com.example.backend.Interfaces.EventCategoryInterface;
 import com.example.backend.Interfaces.EventInterface;
 import com.example.backend.Models.Event;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class EventController {
     private final EventContainer eventContainer;
 
     @Autowired
-    public EventController(EventInterface eventInterface) {
-        this.eventContainer = new EventContainer(eventInterface);
+    public EventController(EventInterface eventInterface, EventCategoryInterface eventCategoryInterface) {
+        this.eventContainer = new EventContainer(eventInterface, eventCategoryInterface);
     }
 
     @GetMapping("/getAllEvents")

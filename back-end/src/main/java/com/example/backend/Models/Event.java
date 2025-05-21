@@ -27,4 +27,12 @@ public class Event {
     public List<Category> GetEventCategories(){
         return categories;
     }
+
+    public boolean SetEventCategories(List<Category> categories){
+        if (categories != null && !categories.isEmpty()) {
+            this.categories = categories;
+            return true;
+        }
+        return false;
+    }
 }

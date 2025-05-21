@@ -1,25 +1,52 @@
 package com.example.backend.Containers;
 
 import com.example.backend.DTOs.EventDTO;
+import com.example.backend.Interfaces.EventCategoryInterface;
 import com.example.backend.Interfaces.EventInterface;
+import com.example.backend.Mappers.CategoryMapper;
 import com.example.backend.Mappers.EventMapper;
+import com.example.backend.Models.Category;
 import com.example.backend.Models.Event;
 
 import java.util.List;
 
 public class EventContainer {
     private final EventInterface repo;
+    private final EventCategoryInterface eventCategoryRepo;
 
-    public EventContainer(EventInterface _repo) {
+    public EventContainer(EventInterface _repo, EventCategoryInterface _eventCategoryRepo) {
         this.repo = _repo;
+        this.eventCategoryRepo = _eventCategoryRepo;
     }
 
     public List<Event> GetAllEvents() {
-        return EventMapper.toModelList((List<EventDTO>)repo.findAll());
+        List<Event> events = EventMapper.toModelList((List<EventDTO>)repo.findAll());
+        for (Event event : events){
+            if(event != null) {
+                List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(event.getEventID()));
+
+                if (categories != null && !categories.isEmpty()) {
+                    boolean success = event.SetEventCategories(categories);
+                    if (!success) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return events;
     }
 
     public Event GetEventById(int eventID) {
-        return EventMapper.toModel(repo.findById(eventID).orElse(null));
+        Event event = EventMapper.toModel(repo.findById(eventID).orElse(null));
+        List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(eventID));
+
+        if(categories != null && !categories.isEmpty() && event != null) {
+            boolean success = event.SetEventCategories(categories);
+            if(!success) {
+                return null;
+            }
+        }
+        return event;
     }
 
 
