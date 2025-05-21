@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventInterface extends CrudRepository<EventDTO, Integer> {
+    void deleteAllByUserDTO_UserID(int userID);
 }

@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface EventCategoryInterface extends CrudRepository<EventCategoryDTO, Integer> {
-    @Query("SELECT new CategoryDTO(c.CategoryID, c.Name) FROM EventCategoryDTO ec JOIN CategoryDTO c WHERE ec.EventDTO.EventID = ?1")
+    @Query("SELECT new CategoryDTO(c.categoryID, c.name) FROM EventCategoryDTO ec JOIN ec.categoryDTO c WHERE ec.eventDTO.eventID = ?1")
     List<CategoryDTO> findCategoriesByEventID(int eventID);
 }

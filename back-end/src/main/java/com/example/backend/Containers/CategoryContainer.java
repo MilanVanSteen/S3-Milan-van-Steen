@@ -4,9 +4,11 @@ import com.example.backend.DTOs.CategoryDTO;
 import com.example.backend.Interfaces.CategoryInterface;
 import com.example.backend.Mappers.CategoryMapper;
 import com.example.backend.Models.Category;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CategoryContainer {
     private final CategoryInterface repo;
 

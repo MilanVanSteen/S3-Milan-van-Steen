@@ -8,13 +8,13 @@ import lombok.Getter;
 @Getter
 public class CalendarEventDTO {
     @Id
-    private int CalendarEventID;
+    private int calendarEventID;
 
     @ManyToOne
     @JoinColumn(name = "CalendarID")
-    private CalendarDTO CalendarDTO;
+    private CalendarDTO calendarDTO;
 
     @ManyToOne
     @JoinColumn(name = "EventID")
-    private EventDTO EventDTO;
+    private EventDTO eventDTO;
 }

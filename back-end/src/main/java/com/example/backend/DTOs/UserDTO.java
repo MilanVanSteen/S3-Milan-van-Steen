@@ -7,16 +7,16 @@ import lombok.Getter;
 @Getter
 public class UserDTO {
     @Id
-    private int UserID;
-    private String Email;
-    private String Password;
-    private String Area;
+    private int userID;
+    private String email;
+    private String password;
+    private String area;
 
     public UserDTO(int userID, String email, String password, String area) {
-        this.UserID = userID;
-        this.Email = email;
-        this.Password = password;
-        this.Area = area;
+        this.userID = userID;
+        this.email = email;
+        this.password = password;
+        this.area = area;
     }
 
     public UserDTO() {

@@ -2,9 +2,6 @@ package com.example.backend.Controllers;
 
 import com.example.backend.Containers.CalendarContainer;
 import com.example.backend.Containers.UserContainer;
-import com.example.backend.Interfaces.CalendarEventInterface;
-import com.example.backend.Interfaces.CalendarInterface;
-import com.example.backend.Interfaces.UserInterface;
 import com.example.backend.Models.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +16,9 @@ public class CalendarController {
     private final UserContainer userContainer;
 
     @Autowired
-    public CalendarController(CalendarInterface calendarInterface, CalendarEventInterface calendarEventInterface, UserInterface userInterface) {
-        this.calendarContainer = new CalendarContainer(calendarInterface, calendarEventInterface);
-        this.userContainer = new UserContainer(userInterface);
+    public CalendarController(CalendarContainer calendarContainer, UserContainer userContainer) {
+        this.calendarContainer = calendarContainer;
+        this.userContainer = userContainer;
     }
 
     @GetMapping("/getAllCalendars")

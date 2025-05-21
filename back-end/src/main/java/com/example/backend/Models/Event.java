@@ -26,11 +26,13 @@ public class Event {
 
     public Event(int eventID, int userID, String name, LocalDateTime startDate, LocalDateTime endDate) {
         this.eventID = eventID;
-        this.user = new User(userID); // partial user, only id set
+        this.user = new User(userID);
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public Event() {}
 
     public List<Category> GetEventCategories(){
         return categories;

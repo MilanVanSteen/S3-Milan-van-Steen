@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CalendarInterface extends CrudRepository<CalendarDTO, Integer> {
+    void deleteAllByUserDTO_UserID(int userID);
 }

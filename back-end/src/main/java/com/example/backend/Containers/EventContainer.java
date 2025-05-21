@@ -7,9 +7,12 @@ import com.example.backend.Mappers.CategoryMapper;
 import com.example.backend.Mappers.EventMapper;
 import com.example.backend.Models.Category;
 import com.example.backend.Models.Event;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EventContainer {
     private final EventInterface repo;
     private final EventCategoryInterface eventCategoryRepo;
@@ -61,5 +64,10 @@ public class EventContainer {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Transactional
+    public void deleteAllEventsByUserId(int userID) {
+        repo.deleteAllByUserDTO_UserID(userID);
     }
 }

@@ -7,16 +7,16 @@ import lombok.Getter;
 @Getter
 public class CalendarDTO {
     @Id
-    private int CalendarID;
+    private int calendarID;
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "UserID")
-    private UserDTO UserDTO;
-    private boolean IsPersonal;
+    private UserDTO userDTO;
+    private boolean isPersonal;
 
     public CalendarDTO(int calendarID, UserDTO userDTO, boolean isPersonal) {
-        this.CalendarID = calendarID;
-        this.UserDTO = userDTO;
-        this.IsPersonal = isPersonal;
+        this.calendarID = calendarID;
+        this.userDTO = userDTO;
+        this.isPersonal = isPersonal;
     }
 
     public CalendarDTO() {

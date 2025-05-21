@@ -1,7 +1,6 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.CategoryContainer;
-import com.example.backend.Interfaces.CategoryInterface;
 import com.example.backend.Models.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,8 @@ public class CategoryController {
     private final CategoryContainer categoryContainer;
 
     @Autowired
-    public CategoryController(CategoryInterface categoryInterface) {
-        this.categoryContainer = new CategoryContainer(categoryInterface);
+    public CategoryController(CategoryContainer categoryContainer) {
+        this.categoryContainer = categoryContainer;
     }
 
     @GetMapping("/getAllCategories")

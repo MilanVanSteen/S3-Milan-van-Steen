@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CalendarEventInterface extends CrudRepository<CalendarEventDTO, Integer> {
-    @Query("SELECT new EventDTO(e.EventID, e.UserDTO, e.Name, e.StartDate, e.EndDate) FROM CalendarEventDTO c JOIN EventDTO e WHERE c.CalendarDTO.CalendarID = ?1")
-    List<EventDTO> findEventsByCalendarID(int questionnaireID);
+    @Query("SELECT new EventDTO(e.eventID, e.userDTO, e.name, e.startDate, e.endDate) FROM CalendarEventDTO c JOIN c.eventDTO e WHERE c.calendarDTO.calendarID = ?1")
+    List<EventDTO> findEventsByCalendarID(int calendarID);
 }

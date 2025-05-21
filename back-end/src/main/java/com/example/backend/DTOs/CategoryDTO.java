@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class CategoryDTO {
     @Id
-    private int CategoryID;
-    private String Name;
+    private int categoryID;
+    private String name;
 
     public CategoryDTO(int categoryID, String name) {
-        this.CategoryID = categoryID;
-        this.Name = name;
+        this.categoryID = categoryID;
+        this.name = name;
     }
 
     public CategoryDTO() {

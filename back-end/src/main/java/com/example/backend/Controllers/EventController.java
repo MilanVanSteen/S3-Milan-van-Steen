@@ -2,9 +2,6 @@ package com.example.backend.Controllers;
 
 import com.example.backend.Containers.EventContainer;
 import com.example.backend.Containers.UserContainer;
-import com.example.backend.Interfaces.EventCategoryInterface;
-import com.example.backend.Interfaces.EventInterface;
-import com.example.backend.Interfaces.UserInterface;
 import com.example.backend.Models.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +16,9 @@ public class EventController {
     private final UserContainer userContainer;
 
     @Autowired
-    public EventController(EventInterface eventInterface, EventCategoryInterface eventCategoryInterface, UserInterface userInterface) {
-        this.eventContainer = new EventContainer(eventInterface, eventCategoryInterface);
-        this.userContainer = new UserContainer(userInterface);
+    public EventController(EventContainer eventContainer, UserContainer userContainer) {
+        this.eventContainer = eventContainer;
+        this.userContainer = userContainer;
     }
 
     @GetMapping("/getAllEvents")

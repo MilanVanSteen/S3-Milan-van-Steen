@@ -8,15 +8,15 @@ import lombok.Getter;
 @Getter
 public class EventCategoryDTO {
     @Id
-    private int EventCategoryID;
+    private int eventCategoryID;
 
     @ManyToOne
     @JoinColumn(name = "EventID")
-    private EventDTO EventDTO;
+    private EventDTO eventDTO;
 
     @ManyToOne
     @JoinColumn(name = "CategoryID")
-    private CategoryDTO CategoryDTO;
+    private CategoryDTO categoryDTO;
 }
 
 

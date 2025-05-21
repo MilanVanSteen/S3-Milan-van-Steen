@@ -9,20 +9,20 @@ import java.time.LocalDateTime;
 @Getter
 public class EventDTO {
     @Id
-    private int EventID;
+    private int eventID;
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "UserID")
-    private UserDTO UserDTO;
-    private String Name;
-    private LocalDateTime StartDate;
-    private LocalDateTime EndDate;
+    private UserDTO userDTO;
+    private String name;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     public EventDTO(int eventID, UserDTO userDTO, String name, LocalDateTime startDate, LocalDateTime endDate) {
-        this.EventID = eventID;
-        this.UserDTO = userDTO;
-        this.Name = name;
-        this.StartDate = startDate;
-        this.EndDate = endDate;
+        this.eventID = eventID;
+        this.userDTO = userDTO;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public EventDTO() {

@@ -1,28 +1,39 @@
 ###
 GET http://localhost:8080/calendar/getAllCalendars
 
-###
-POST http://localhost:8080/calendar/createCalendar
-Content-Type: application/json
-
-{
-  "calendarID": 1,
-  "userID": 1,
-  "isPersonal": false,
-  "events": []
-}
-
-<> 2025-05-20T121012.200.json
-<> 2025-05-20T120902.200.json
+<> 2025-05-21T172001.200.json
+<> 2025-05-21T171731.200.json
+<> 2025-05-21T171725.200.json
+<> 2025-05-21T171210.500.json
+<> 2025-05-21T171043.500.json
+<> 2025-05-21T171035.500.json
+<> 2025-05-21T170826.500.json
 
 ###
 GET http://localhost:8080/calendar/getCalendarById?
     calendarID=1
 
-<> 2025-05-20T120916.200.json
+<> 2025-05-21T171745.200.json
+<> 2025-05-21T171259.500.json
+<> 2025-05-21T171242.500.json
+
+###
+POST http://localhost:8080/calendar/createCalendar
+Content-Type: application/json
+
+{
+  "calendarID": 2,
+  "user": {
+    "userID": 1
+  },
+  "isPersonal": false,
+  "events": []
+}
+
+<> 2025-05-21T171958.200.json
 
 ###
 DELETE http://localhost:8080/calendar/deleteCalendar?
-    calendarID=1
+    calendarID=2
 
-<> 2025-05-20T120923.200.txt
+<> 2025-05-21T172019.200.txt

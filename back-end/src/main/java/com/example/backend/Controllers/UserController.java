@@ -1,7 +1,6 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.UserContainer;
-import com.example.backend.Interfaces.UserInterface;
 import com.example.backend.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,8 @@ public class UserController {
     private final UserContainer userContainer;
 
     @Autowired
-    public UserController(UserInterface userInterface) {
-        this.userContainer = new UserContainer(userInterface);
+    public UserController(UserContainer userContainer) {
+        this.userContainer = userContainer;
     }
 
     @GetMapping("/getAllUsers")

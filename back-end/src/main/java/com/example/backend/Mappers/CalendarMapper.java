@@ -22,7 +22,7 @@ public class CalendarMapper {
             return null;
         }
         User user = UserMapper.toModel(calendarDTO.getUserDTO());
-        return new Calendar(calendarDTO.getCalendarID(), user, calendarDTO.isIsPersonal());
+        return new Calendar(calendarDTO.getCalendarID(), user, calendarDTO.isPersonal());
     }
 
     public static List<CalendarDTO> toDTOList(List<Calendar> calendars) {

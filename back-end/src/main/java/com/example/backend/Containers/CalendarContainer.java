@@ -7,9 +7,12 @@ import com.example.backend.Mappers.CalendarMapper;
 import com.example.backend.Mappers.EventMapper;
 import com.example.backend.Models.Calendar;
 import com.example.backend.Models.Event;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CalendarContainer {
     private final CalendarInterface repo;
     private final CalendarEventInterface calendarEventRepo;
@@ -61,5 +64,10 @@ public class CalendarContainer {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Transactional
+    public void deleteAllCalendarsByUserId(int userID) {
+        repo.deleteAllByUserDTO_UserID(userID);
     }
 }
