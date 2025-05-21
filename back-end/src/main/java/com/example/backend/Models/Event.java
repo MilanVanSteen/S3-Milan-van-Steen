@@ -10,15 +10,23 @@ import java.util.List;
 @Setter
 public class Event {
     private int eventID;
-    private int userID;
+    private User user;
     private String name;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private List<Category> categories;
 
+    public Event(int eventID, User user, String name, LocalDateTime startDate, LocalDateTime endDate) {
+        this.eventID = eventID;
+        this.user = user;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Event(int eventID, int userID, String name, LocalDateTime startDate, LocalDateTime endDate) {
         this.eventID = eventID;
-        this.userID = userID;
+        this.user = new User(userID); // partial user, only id set
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;

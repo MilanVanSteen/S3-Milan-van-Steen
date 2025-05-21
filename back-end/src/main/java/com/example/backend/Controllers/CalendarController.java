@@ -1,8 +1,10 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.CalendarContainer;
+import com.example.backend.Containers.UserContainer;
 import com.example.backend.Interfaces.CalendarEventInterface;
 import com.example.backend.Interfaces.CalendarInterface;
+import com.example.backend.Interfaces.UserInterface;
 import com.example.backend.Models.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,12 @@ import java.util.List;
 @RequestMapping("/calendar")
 public class CalendarController {
     private final CalendarContainer calendarContainer;
+    private final UserContainer userContainer;
 
     @Autowired
-    public CalendarController(CalendarInterface calendarInterface, CalendarEventInterface calendarEventInterface) {
+    public CalendarController(CalendarInterface calendarInterface, CalendarEventInterface calendarEventInterface, UserInterface userInterface) {
         this.calendarContainer = new CalendarContainer(calendarInterface, calendarEventInterface);
+        this.userContainer = new UserContainer(userInterface);
     }
 
     @GetMapping("/getAllCalendars")
@@ -41,6 +45,9 @@ public class CalendarController {
 
     @PostMapping("/createCalendar")
     public ResponseEntity<Calendar> CreateCalendar(@RequestBody Calendar calendar) {
+        int userID = calendar.getUser().getUserID();
+        calendar.setUser(userContainer.GetUserById(userID));
+
         Calendar createdCalendar = calendarContainer.CreateCalendar(calendar);
         return ResponseEntity.ok(createdCalendar);
     }

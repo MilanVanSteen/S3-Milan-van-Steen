@@ -1,7 +1,9 @@
 package com.example.backend.Mappers;
 
 import com.example.backend.DTOs.EventDTO;
+import com.example.backend.DTOs.UserDTO;
 import com.example.backend.Models.Event;
+import com.example.backend.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +13,16 @@ public class EventMapper {
         if(event == null){
             return null;
         }
-        return new EventDTO(event.getEventID(), event.getUserID(), event.getName(), event.getStartDate(), event.getEndDate());
+        UserDTO userDTO = UserMapper.toDTO(event.getUser());
+        return new EventDTO(event.getEventID(), userDTO, event.getName(), event.getStartDate(), event.getEndDate());
     }
 
     public static Event toModel(EventDTO eventDTO) {
         if(eventDTO == null){
             return null;
         }
-        return new Event(eventDTO.getEventID(), eventDTO.getUserID(), eventDTO.getName(), eventDTO.getStartDate(), eventDTO.getEndDate());
+        User user = UserMapper.toModel(eventDTO.getUserDTO());
+        return new Event(eventDTO.getEventID(), user, eventDTO.getName(), eventDTO.getStartDate(), eventDTO.getEndDate());
     }
 
     public static List<EventDTO> toDTOList(List<Event> events) {

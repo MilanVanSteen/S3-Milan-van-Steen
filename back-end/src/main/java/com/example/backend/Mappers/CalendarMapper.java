@@ -1,7 +1,9 @@
 package com.example.backend.Mappers;
 
 import com.example.backend.DTOs.CalendarDTO;
+import com.example.backend.DTOs.UserDTO;
 import com.example.backend.Models.Calendar;
+import com.example.backend.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +13,16 @@ public class CalendarMapper {
         if(calendar == null){
             return null;
         }
-        return new CalendarDTO(calendar.getCalendarID(), calendar.getUserID(), calendar.isPersonal());
+        UserDTO userDTO = UserMapper.toDTO(calendar.getUser());
+        return new CalendarDTO(calendar.getCalendarID(), userDTO, calendar.isPersonal());
     }
 
     public static Calendar toModel(CalendarDTO calendarDTO) {
         if(calendarDTO == null){
             return null;
         }
-        return new Calendar(calendarDTO.getCalendarID(), calendarDTO.getUserID(), calendarDTO.isIsPersonal());
+        User user = UserMapper.toModel(calendarDTO.getUserDTO());
+        return new Calendar(calendarDTO.getCalendarID(), user, calendarDTO.isIsPersonal());
     }
 
     public static List<CalendarDTO> toDTOList(List<Calendar> calendars) {

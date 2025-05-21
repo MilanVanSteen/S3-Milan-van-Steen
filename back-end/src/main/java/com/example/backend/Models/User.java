@@ -21,6 +21,14 @@ public class User {
         this.area = area;
     }
 
+    public User(int userID) {
+        this.userID = userID;
+    }
+
+    public User(){
+
+    }
+
     public List<Calendar> GetUserCalendars(){
         return calendars;
     }

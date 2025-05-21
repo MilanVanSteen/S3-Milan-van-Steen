@@ -1,8 +1,10 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.EventContainer;
+import com.example.backend.Containers.UserContainer;
 import com.example.backend.Interfaces.EventCategoryInterface;
 import com.example.backend.Interfaces.EventInterface;
+import com.example.backend.Interfaces.UserInterface;
 import com.example.backend.Models.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,12 @@ import java.util.List;
 @RequestMapping("/event")
 public class EventController {
     private final EventContainer eventContainer;
+    private final UserContainer userContainer;
 
     @Autowired
-    public EventController(EventInterface eventInterface, EventCategoryInterface eventCategoryInterface) {
+    public EventController(EventInterface eventInterface, EventCategoryInterface eventCategoryInterface, UserInterface userInterface) {
         this.eventContainer = new EventContainer(eventInterface, eventCategoryInterface);
+        this.userContainer = new UserContainer(userInterface);
     }
 
     @GetMapping("/getAllEvents")
@@ -41,6 +45,9 @@ public class EventController {
 
     @PostMapping("/createEvent")
     public ResponseEntity<Event> CreateEvent(@RequestBody Event event) {
+        int userID = event.getUser().getUserID();
+        event.setUser(userContainer.GetUserById(userID));
+
         Event createdEvent = eventContainer.CreateEvent(event);
         return ResponseEntity.ok(createdEvent);
     }
