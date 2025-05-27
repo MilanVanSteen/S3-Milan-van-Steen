@@ -52,6 +52,13 @@ onMounted(async () => {
     <ul v-else>
       <li v-for="calendar in calendars" :key="calendar.calendarID">
         Calendar met ID: {{ calendar.calendarID }}
+
+        <p>Events:</p>
+        <ul>
+          <li v-for="event in calendar.events" :key="event.eventID">
+            {{ event.name }} (ID: {{ event.eventID }})
+          </li>
+        </ul>
       </li>
     </ul>
   </header>
