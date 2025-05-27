@@ -7,7 +7,9 @@ import lombok.Getter;
 @Getter
 public class CategoryDTO {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryID;
+
     private String name;
 
     public CategoryDTO(int categoryID, String name) {
@@ -15,7 +17,9 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public CategoryDTO() {
-
+    public CategoryDTO(String name) {
+        this.name = name;
     }
+
+    public CategoryDTO() {}
 }

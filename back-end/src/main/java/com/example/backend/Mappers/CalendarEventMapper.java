@@ -19,13 +19,18 @@ public class CalendarEventMapper {
         CalendarDTO calendarDTO = CalendarMapper.toDTO(calendarEvent.getCalendar());
         EventDTO eventDTO = EventMapper.toDTO(calendarEvent.getEvent());
 
-        return new CalendarEventDTO(
-                calendarEvent.getCalendarEventID(),
-                calendarDTO,
-                eventDTO
-        );
+        if (calendarEvent.getCalendarEventID() == 0) {
+            // New CalendarEvent, no ID set
+            return new CalendarEventDTO(calendarDTO, eventDTO);
+        } else {
+            // Existing CalendarEvent with ID
+            return new CalendarEventDTO(
+                    calendarEvent.getCalendarEventID(),
+                    calendarDTO,
+                    eventDTO
+            );
+        }
     }
-
 
     public static CalendarEvent toModel(CalendarEventDTO calendarEventDTO) {
         if (calendarEventDTO == null) {

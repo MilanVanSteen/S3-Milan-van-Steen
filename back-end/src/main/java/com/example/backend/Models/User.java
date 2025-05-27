@@ -21,13 +21,17 @@ public class User {
         this.area = area;
     }
 
+    public User(String email, String password, String area) {
+        this.email = email;
+        this.password = password;
+        this.area = area;
+    }
+
     public User(int userID) {
         this.userID = userID;
     }
 
-    public User(){
-
-    }
+    public User(){}
 
     public List<Calendar> GetUserCalendars(){
         return calendars;

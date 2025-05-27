@@ -1,6 +1,5 @@
 package com.example.backend.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,19 +10,29 @@ import java.util.List;
 public class Calendar {
     private int calendarID;
     private User user;
-    private boolean isPersonal;
+    private boolean personal;
     private List<Event> events;
 
-    public Calendar(int calendarID, User user, boolean isPersonal) {
+    public Calendar(int calendarID, User user, boolean personal) {
         this.calendarID = calendarID;
         this.user = user;
-        this.isPersonal = isPersonal;
+        this.personal = personal;
     }
 
-    public Calendar(int calendarID, int userID, boolean isPersonal) {
+    public Calendar(int calendarID, int userID, boolean personal) {
         this.calendarID = calendarID;
         this.user = new User(userID);
-        this.isPersonal = isPersonal;
+        this.personal = personal;
+    }
+
+    public Calendar(User user, boolean personal) {
+        this.user = user;
+        this.personal = personal;
+    }
+
+    public Calendar(int userID, boolean personal) {
+        this.user = new User(userID);
+        this.personal = personal;
     }
 
     public Calendar(int calendarID){

@@ -32,6 +32,20 @@ public class Event {
         this.endDate = endDate;
     }
 
+    public Event(User user, String name, LocalDateTime startDate, LocalDateTime endDate) {
+        this.user = user;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Event(int userID, String name, LocalDateTime startDate, LocalDateTime endDate) {
+        this.user = new User(userID);
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Event(int eventID){
         this.eventID = eventID;
     }

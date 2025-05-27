@@ -11,7 +11,14 @@ public class UserMapper {
         if(user == null){
             return null;
         }
-        return new UserDTO(user.getUserID(), user.getEmail(), user.getPassword(), user.getArea());
+
+        if(user.getUserID() == 0){
+            // New user, don't set ID
+            return new UserDTO(user.getEmail(), user.getPassword(), user.getArea());
+        } else {
+            // Existing user with ID
+            return new UserDTO(user.getUserID(), user.getEmail(), user.getPassword(), user.getArea());
+        }
     }
 
     public static User toModel(UserDTO userDTO) {

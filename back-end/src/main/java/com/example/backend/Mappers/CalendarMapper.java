@@ -10,11 +10,18 @@ import java.util.List;
 
 public class CalendarMapper {
     public static CalendarDTO toDTO(Calendar calendar) {
-        if(calendar == null){
+        if (calendar == null) {
             return null;
         }
         UserDTO userDTO = UserMapper.toDTO(calendar.getUser());
-        return new CalendarDTO(calendar.getCalendarID(), userDTO, calendar.isPersonal());
+
+        if (calendar.getCalendarID() == 0) {
+            // New calendar, don't set ID
+            return new CalendarDTO(userDTO, calendar.isPersonal());
+        } else {
+            // Existing calendar with ID
+            return new CalendarDTO(calendar.getCalendarID(), userDTO, calendar.isPersonal());
+        }
     }
 
     public static Calendar toModel(CalendarDTO calendarDTO) {

@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class CalendarEventDTO {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int calendarEventID;
 
     @ManyToOne
@@ -20,6 +21,11 @@ public class CalendarEventDTO {
 
     public CalendarEventDTO(int calendarEventID, CalendarDTO calendarDTO, EventDTO eventDTO) {
         this.calendarEventID = calendarEventID;
+        this.calendarDTO = calendarDTO;
+        this.eventDTO = eventDTO;
+    }
+
+    public CalendarEventDTO(CalendarDTO calendarDTO, EventDTO eventDTO) {
         this.calendarDTO = calendarDTO;
         this.eventDTO = eventDTO;
     }

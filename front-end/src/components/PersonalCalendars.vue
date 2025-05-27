@@ -22,7 +22,7 @@ const fetchUser = async () => {
 const fetchCalendars = async () => {
   try {
     const allCalendars = await client.getCalendarsByUserID(currentUser.value.userID)
-    calendars.value = allCalendars.filter(c => c.isPersonal === true)
+    calendars.value = allCalendars.filter(c => c.personal === true)
   } catch (err) {
     error.value = 'Error fetching calendars.'
     console.error(err)

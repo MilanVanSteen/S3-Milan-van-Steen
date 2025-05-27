@@ -24,5 +24,15 @@ public class CalendarEvent {
         this.event = new Event(eventID);
     }
 
+    public CalendarEvent(Calendar calendar, Event event){
+        this.calendar = calendar;
+        this.event = event;
+    }
+
+    public CalendarEvent(int calendarID, int eventID){
+        this.calendar = new Calendar(calendarID);
+        this.event = new Event(eventID);
+    }
+
     public CalendarEvent(){}
 }

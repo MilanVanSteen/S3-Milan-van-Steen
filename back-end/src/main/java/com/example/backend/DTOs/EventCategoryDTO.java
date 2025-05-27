@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class EventCategoryDTO {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int eventCategoryID;
 
     @ManyToOne

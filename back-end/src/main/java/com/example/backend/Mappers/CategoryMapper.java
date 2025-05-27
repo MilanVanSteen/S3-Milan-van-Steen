@@ -11,7 +11,13 @@ public class CategoryMapper {
         if(category == null) {
             return null;
         }
-        return new CategoryDTO(category.getCategoryID(), category.getName());
+        if(category.getCategoryID() == 0) {
+            // New category, don't set ID
+            return new CategoryDTO(category.getName());
+        } else {
+            // Existing category with ID
+            return new CategoryDTO(category.getCategoryID(), category.getName());
+        }
     }
 
     public static Category toModel(CategoryDTO categoryDTO) {

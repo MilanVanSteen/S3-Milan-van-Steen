@@ -10,12 +10,21 @@ import java.util.List;
 
 public class EventMapper {
     public static EventDTO toDTO(Event event) {
-        if(event == null){
+        if (event == null) {
             return null;
         }
+
         UserDTO userDTO = UserMapper.toDTO(event.getUser());
-        return new EventDTO(event.getEventID(), userDTO, event.getName(), event.getStartDate(), event.getEndDate());
+
+        if (event.getEventID() == 0) {
+            // New event, no ID yet
+            return new EventDTO(userDTO, event.getName(), event.getStartDate(), event.getEndDate());
+        } else {
+            // Existing event with ID
+            return new EventDTO(event.getEventID(), userDTO, event.getName(), event.getStartDate(), event.getEndDate());
+        }
     }
+
 
     public static Event toModel(EventDTO eventDTO) {
         if(eventDTO == null){
