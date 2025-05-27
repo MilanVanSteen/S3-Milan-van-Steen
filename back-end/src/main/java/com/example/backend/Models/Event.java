@@ -32,6 +32,10 @@ public class Event {
         this.endDate = endDate;
     }
 
+    public Event(int eventID){
+        this.eventID = eventID;
+    }
+
     public Event() {}
 
     public List<Category> GetEventCategories(){

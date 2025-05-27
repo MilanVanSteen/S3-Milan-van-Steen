@@ -17,4 +17,12 @@ public class CalendarEventDTO {
     @ManyToOne
     @JoinColumn(name = "EventID")
     private EventDTO eventDTO;
+
+    public CalendarEventDTO(int calendarEventID, CalendarDTO calendarDTO, EventDTO eventDTO) {
+        this.calendarEventID = calendarEventID;
+        this.calendarDTO = calendarDTO;
+        this.eventDTO = eventDTO;
+    }
+
+    public CalendarEventDTO() {}
 }

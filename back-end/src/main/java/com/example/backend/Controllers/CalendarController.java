@@ -1,8 +1,10 @@
 package com.example.backend.Controllers;
 
 import com.example.backend.Containers.CalendarContainer;
+import com.example.backend.Containers.EventContainer;
 import com.example.backend.Containers.UserContainer;
 import com.example.backend.Models.Calendar;
+import com.example.backend.Models.CalendarEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +16,13 @@ import java.util.List;
 public class CalendarController {
     private final CalendarContainer calendarContainer;
     private final UserContainer userContainer;
+    private final EventContainer eventContainer;
 
     @Autowired
-    public CalendarController(CalendarContainer calendarContainer, UserContainer userContainer) {
+    public CalendarController(CalendarContainer calendarContainer, UserContainer userContainer, EventContainer eventContainer) {
         this.calendarContainer = calendarContainer;
         this.userContainer = userContainer;
+        this.eventContainer = eventContainer;
     }
 
     @GetMapping("/getAllCalendars")
@@ -57,6 +61,20 @@ public class CalendarController {
 
         Calendar createdCalendar = calendarContainer.CreateCalendar(calendar);
         return ResponseEntity.ok(createdCalendar);
+    }
+
+    @PostMapping("/saveCalendarEvent")
+    public ResponseEntity<String> SaveCalendarEvent(@RequestBody CalendarEvent calendarEvent) {
+        int calendarID = calendarEvent.getCalendar().getCalendarID();
+        calendarEvent.setCalendar(calendarContainer.GetCalendarById(calendarID));
+
+        int eventID = calendarEvent.getEvent().getEventID();
+        calendarEvent.setEvent(eventContainer.GetEventById(eventID));
+
+        if (calendarContainer.SaveCalendarEvent(calendarEvent)){
+            return ResponseEntity.ok("Saved calendarEvent");
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/deleteCalendar")

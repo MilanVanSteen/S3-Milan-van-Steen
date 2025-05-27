@@ -3,9 +3,11 @@ package com.example.backend.Containers;
 import com.example.backend.DTOs.CalendarDTO;
 import com.example.backend.Interfaces.CalendarEventInterface;
 import com.example.backend.Interfaces.CalendarInterface;
+import com.example.backend.Mappers.CalendarEventMapper;
 import com.example.backend.Mappers.CalendarMapper;
 import com.example.backend.Mappers.EventMapper;
 import com.example.backend.Models.Calendar;
+import com.example.backend.Models.CalendarEvent;
 import com.example.backend.Models.Event;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -71,6 +73,15 @@ public class CalendarContainer {
 
     public Calendar CreateCalendar(Calendar calendar){
         return CalendarMapper.toModel(repo.save(CalendarMapper.toDTO(calendar)));
+    }
+
+    public boolean SaveCalendarEvent(CalendarEvent calendarEvent){
+        try {
+            calendarEventRepo.save(CalendarEventMapper.toDTO(calendarEvent));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean DeleteCalendar(int calendarID){

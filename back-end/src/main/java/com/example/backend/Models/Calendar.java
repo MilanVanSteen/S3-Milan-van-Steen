@@ -26,6 +26,10 @@ public class Calendar {
         this.isPersonal = isPersonal;
     }
 
+    public Calendar(int calendarID){
+        this.calendarID = calendarID;
+    }
+
     public Calendar() {}
 
     public List<Event> GetCalendarEvents(){
