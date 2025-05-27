@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Client } from '../API.ts' // adjust path if needed
+import { Client } from '../API.ts'
+import {useRoute} from "vue-router"; // adjust path if needed
 
+const route = useRoute()
 const client = new Client()
 const calendars = ref([])
 const isLoading = ref(true)
@@ -10,7 +12,7 @@ const currentUser = ref(null)
 
 const fetchUser = async () => {
   try {
-    currentUser.value = await client.getUserById(2)
+    currentUser.value = await client.getUserById(route.params.userID)
   } catch (err) {
     error.value = 'Error fetching user.'
     console.error(err)

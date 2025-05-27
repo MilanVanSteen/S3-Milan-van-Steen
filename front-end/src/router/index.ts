@@ -4,12 +4,12 @@ import PersonalCalendars from '../components/PersonalCalendars.vue'
 
 const routes = [
     {
-        path: '/',
+        path: '/calendarList/:userID',
         name: 'CalendarList',
         component: CalendarList,
     },
     {
-        path: '/personalCalendars',
+        path: '/personalCalendars/:userID',
         name: 'PersonalCalendars',
         component: PersonalCalendars,
     },
