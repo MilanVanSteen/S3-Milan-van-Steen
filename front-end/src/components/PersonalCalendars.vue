@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Client } from '../API.ts'
+import { Client } from '../API.ts' // adjust path if needed
 
 const client = new Client()
 const calendars = ref([])
@@ -12,48 +12,51 @@ const fetchUser = async () => {
   try {
     currentUser.value = await client.getUserById(2)
   } catch (err) {
-    console.error('Error fetching user:', err)
-    throw new Error('User fetch failed')
+    error.value = 'Error fetching user.'
+    console.error(err)
   }
 }
 
 const fetchCalendars = async () => {
   try {
-    calendars.value = await client.getCalendarsByUserID(currentUser.value.userID)
+    const allCalendars = await client.getCalendarsByUserID(currentUser.value.userID)
+    calendars.value = allCalendars.filter(c => c.isPersonal === true)
   } catch (err) {
-    console.error('Error fetching calendars:', err)
-    throw new Error('Calendar fetch failed')
+    error.value = 'Error fetching calendars.'
+    console.error(err)
   }
 }
 
 onMounted(async () => {
-  try {
-    await fetchUser()
-    if (!currentUser.value) throw new Error('User not found')
+  isLoading.value = true
+  error.value = null
+
+  await fetchUser()
+  if (currentUser.value) {
     await fetchCalendars()
-  } catch (err) {
-    error.value = err.message
-  } finally {
-    isLoading.value = false
+  } else {
+    error.value = 'User not found.'
   }
+
+  isLoading.value = false
 })
 </script>
 
-
 <template>
   <header>
-    <h1>Calendars</h1>
+    <h1>Personal Calendars</h1>
 
     <p v-if="isLoading">Loading calendars...</p>
     <p v-else-if="error">{{ error }}</p>
 
-    <ul v-else>
+    <ul v-else-if="calendars.length > 0">
       <li v-for="calendar in calendars" :key="calendar.calendarID">
         (ID: {{ calendar.calendarID }})
       </li>
     </ul>
+
+    <p v-else>No personal calendars found.</p>
   </header>
 
   <main></main>
 </template>
-

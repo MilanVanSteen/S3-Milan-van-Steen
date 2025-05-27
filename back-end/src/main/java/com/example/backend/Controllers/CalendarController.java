@@ -40,6 +40,16 @@ public class CalendarController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/getCalendarsByUserID")
+    public ResponseEntity<List<Calendar>> GetCalendarsByUserID(@RequestParam int userID) {
+        List<Calendar> calendars = calendarContainer.GetCalendarsByUserID(userID);
+        if (calendars == null || !calendars.iterator().hasNext()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(calendars);
+        }
+    }
+
     @PostMapping("/createCalendar")
     public ResponseEntity<Calendar> CreateCalendar(@RequestBody Calendar calendar) {
         int userID = calendar.getUser().getUserID();

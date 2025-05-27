@@ -52,6 +52,22 @@ public class CalendarContainer {
         return calendar;
     }
 
+    public List<Calendar> GetCalendarsByUserID(int userID) {
+        List<Calendar> calendars = CalendarMapper.toModelList(repo.getCalendarsByUserID(userID));
+        for (Calendar calendar : calendars){
+            if(calendar != null) {
+                List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
+
+                if(events != null && !events.isEmpty()) {
+                    boolean success = calendar.SetCalendarEvents(events);
+                    if(!success) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return calendars;
+    }
 
     public Calendar CreateCalendar(Calendar calendar){
         return CalendarMapper.toModel(repo.save(CalendarMapper.toDTO(calendar)));
