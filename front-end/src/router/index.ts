@@ -13,6 +13,11 @@ const routes = [
         name: 'PersonalCalendars',
         component: PersonalCalendars,
     },
+    {
+        path: '/calendar/:userID',
+        name: 'VuetifyCalendar',
+        component: () => import('../components/CalendarView.vue')
+    }
 ]
 
 const router = createRouter({

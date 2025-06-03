@@ -17,13 +17,13 @@ public class ContainerConfig {
     }
 
     @Bean
-    public UserContainer userContainer(UserInterface userInterface, EventContainer eventContainer, CalendarContainer calendarContainer) {
-        return new UserContainer(userInterface, eventContainer, calendarContainer);
+    public CalendarContainer calendarContainer(CalendarInterface calendarInterface, CalendarEventInterface calendarEventInterface) {
+        return new CalendarContainer(calendarInterface, calendarEventInterface);
     }
 
     @Bean
-    public CalendarContainer calendarContainer(CalendarInterface calendarInterface, CalendarEventInterface calendarEventInterface) {
-        return new CalendarContainer(calendarInterface, calendarEventInterface);
+    public UserContainer userContainer(UserInterface userInterface, EventContainer eventContainer, CalendarContainer calendarContainer) {
+        return new UserContainer(userInterface, eventContainer, calendarContainer);
     }
 
     @Bean
