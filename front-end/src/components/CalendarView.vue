@@ -10,9 +10,6 @@ const isLoading = ref(true)
 const error = ref(null)
 const currentUser = ref(null)
 
-// Example user ID – replace with actual dynamic value
-const userId = 1
-
 const fetchUser = async () => {
   try {
     currentUser.value = await client.getUserById(route.params.userID)
@@ -24,7 +21,7 @@ const fetchUser = async () => {
 
 const fetchEvents = async (userId) => {
   try {
-    const calendars = await client.getCalendarsByUserID(userId)
+    const calendars = await client.getCalendarsByUserID(currentUser.value.userID)
     const allEvents = calendars
         .filter(calendar => calendar && Array.isArray(calendar.events))
         .flatMap(calendar => calendar.events)
@@ -57,11 +54,34 @@ onMounted(async () => {
   <v-container>
     <div v-if="isLoading">Loading events...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
+
     <v-calendar
-        v-else
         :events="events"
         color="primary"
         type="month"
-    />
+    >
+      <template #event="{ event }">
+        <div class="custom-event" :title="event.name">
+          {{ event.name }}
+        </div>
+      </template>
+    </v-calendar>
   </v-container>
 </template>
+
+<style scoped>
+.custom-event {
+  background-color: dimgray;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+</style>
+
