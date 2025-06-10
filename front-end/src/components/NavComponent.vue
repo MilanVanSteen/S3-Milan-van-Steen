@@ -45,6 +45,13 @@ onMounted(() => {
       >
         TestCalendar
       </router-link>
+
+      <router-link
+          :to="`/CalendarExample`"
+          :class="{ disabled: !currentUser }"
+      >
+        ExampleCalendar
+      </router-link>
     </div>
 
     <span v-if="currentUser" class="user-id">User ID: {{ currentUser.userID }}</span>

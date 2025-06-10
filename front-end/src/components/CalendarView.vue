@@ -31,11 +31,30 @@ const fetchEvents = async () => {
         .filter(calendar => calendar && Array.isArray(calendar.events))
         .flatMap(calendar => calendar.events)
 
-    events.value = allEvents.map(event => ({
-      name: event.name,
-      start: new Date(event.startDate),
-      end: new Date(event.endDate),
-    }))
+    events.value = allEvents.flatMap(event => {
+      const expanded = []
+      const start = new Date(event.startDate)
+      const end = new Date(event.endDate)
+      let d = new Date(start)
+
+      while (d <= end) {
+        const part =
+            d.toDateString() === start.toDateString()
+                ? 'start'
+                : d.toDateString() === end.toDateString()
+                    ? 'end'
+                    : 'middle'
+
+        expanded.push({
+          name: event.name,
+          start: new Date(d),
+          end: new Date(d),
+          part,
+        })
+        d.setDate(d.getDate() + 1)
+      }
+      return expanded
+    })
   } catch (err) {
     throw new Error('Failed to fetch events')
   }
@@ -60,6 +79,7 @@ onMounted(async () => {
     await fetchUser()
     if (!currentUser.value) throw new Error('User not found')
     await fetchEvents()
+    console.log(events.value)
   } catch (err) {
     error.value = err.message
   } finally {
@@ -75,26 +95,12 @@ onMounted(async () => {
 
     <div v-else>
       <div class="calendar-header">
-        <v-btn
-            outlined
-            class="today-button"
-            @click="today = new Date()"
-        >
-          Today
-        </v-btn>
+        <v-btn outlined class="today-button" @click="today = new Date()">Today</v-btn>
 
         <div class="month-controls">
-          <v-btn icon @click="prevMonth" aria-label="Previous month">
-            <
-          </v-btn>
-
-          <div class="month-label">
-            {{ formattedMonth }}
-          </div>
-
-          <v-btn icon @click="nextMonth" aria-label="Next month">
-            >
-          </v-btn>
+          <v-btn icon @click="prevMonth">&lt;</v-btn>
+          <div class="month-label">{{ formattedMonth }}</div>
+          <v-btn icon @click="nextMonth">&gt;</v-btn>
         </div>
       </div>
 
@@ -124,6 +130,9 @@ onMounted(async () => {
 
 <style scoped>
 .custom-event {
+  display: block;
+  width: 100%;
+  height: 100%;
   background-color: #1976d2;
   color: white;
   padding: 4px 8px;
@@ -136,6 +145,7 @@ onMounted(async () => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   border: 1px solid #1565c0;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .calendar-header {
@@ -169,4 +179,3 @@ onMounted(async () => {
   font-size: 1.25rem;
 }
 </style>
-

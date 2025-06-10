@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import 'core-js/features/promise'
 import CalendarList from '../components/CalendarList.vue'
 import PersonalCalendars from '../components/PersonalCalendars.vue'
+import CalendarExample from "@/components/CalendarExample.vue";
 
 const routes = [
     {
@@ -17,6 +19,11 @@ const routes = [
         path: '/calendar/:userID',
         name: 'VuetifyCalendar',
         component: () => import('../components/CalendarView.vue')
+    },
+    {
+        path: '/calendarExample/',
+        name: 'CalendarExample',
+        component: CalendarExample,
     }
 ]
 
