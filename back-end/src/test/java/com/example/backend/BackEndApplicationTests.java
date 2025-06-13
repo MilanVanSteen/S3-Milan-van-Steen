@@ -8,7 +8,7 @@ class BackEndApplicationTests {
 
     @Test
     void contextLoads() {
-        throw new UnsupportedOperationException();
+        // This test will pass if the Spring context loads successfully
     }
 
 }
