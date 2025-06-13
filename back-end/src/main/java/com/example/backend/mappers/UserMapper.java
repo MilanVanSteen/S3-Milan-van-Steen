@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserMapper {
+    // Private constructor to prevent instantiation
+    private UserMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static UserDTO toDTO(User user) {
         if(user == null){
             return null;

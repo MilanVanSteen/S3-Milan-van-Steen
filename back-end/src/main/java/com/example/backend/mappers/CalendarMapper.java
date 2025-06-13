@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarMapper {
+    // Private constructor to prevent instantiation
+    private CalendarMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static CalendarDTO toDTO(Calendar calendar) {
         if (calendar == null) {
             return null;

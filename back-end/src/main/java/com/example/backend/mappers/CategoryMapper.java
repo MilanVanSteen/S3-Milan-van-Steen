@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryMapper {
+    // Private constructor to prevent instantiation
+    private CategoryMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static CategoryDTO toDTO(Category category) {
         if(category == null) {
             return null;

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventMapper {
+    // Private constructor to prevent instantiation
+    private EventMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static EventDTO toDTO(Event event) {
         if (event == null) {
             return null;
@@ -24,6 +29,7 @@ public class EventMapper {
             return new EventDTO(event.getEventID(), userDTO, event.getName(), event.getStartDate(), event.getEndDate());
         }
     }
+
 
 
     public static Event toModel(EventDTO eventDTO) {
