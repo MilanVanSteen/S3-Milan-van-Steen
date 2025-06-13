@@ -2,9 +2,12 @@ package com.example.backend.dtos;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
+@SuppressWarnings("unused")
 public class CalendarDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,17 +17,17 @@ public class CalendarDTO {
     @JoinColumn(name = "UserID", referencedColumnName = "UserID")
     private UserDTO userDTO;
 
-    private boolean isPersonal;
+    private boolean personal;
 
-    public CalendarDTO(int calendarID, UserDTO userDTO, boolean isPersonal) {
+    public CalendarDTO(int calendarID, UserDTO userDTO, boolean personal) {
         this.calendarID = calendarID;
         this.userDTO = userDTO;
-        this.isPersonal = isPersonal;
+        this.personal = personal;
     }
 
-    public CalendarDTO(UserDTO userDTO, boolean isPersonal) {
+    public CalendarDTO(UserDTO userDTO, boolean personal) {
         this.userDTO = userDTO;
-        this.isPersonal = isPersonal;
+        this.personal = personal;
     }
 
     public CalendarDTO() {}

@@ -2,9 +2,12 @@ package com.example.backend.dtos;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
+@SuppressWarnings("unused")
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

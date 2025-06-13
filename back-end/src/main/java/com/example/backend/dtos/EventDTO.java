@@ -1,12 +1,16 @@
 package com.example.backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
+@SuppressWarnings("unused")
 public class EventDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

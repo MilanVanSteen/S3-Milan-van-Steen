@@ -2,10 +2,13 @@ package com.example.backend.dtos;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "EventCategory")
 @Getter
+@Setter
+@SuppressWarnings("unused")
 public class EventCategoryDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
