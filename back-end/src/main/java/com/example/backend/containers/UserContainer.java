@@ -15,27 +15,27 @@ public class UserContainer {
     private final EventContainer eventContainer;
     private final CalendarContainer calendarContainer;
 
-    public UserContainer(UserInterface _repo, EventContainer _eventContainer, CalendarContainer _calendarContainer) {
-        this.repo = _repo;
-        this.eventContainer = _eventContainer;
-        this.calendarContainer = _calendarContainer;
+    public UserContainer(UserInterface repo, EventContainer eventContainer, CalendarContainer calendarContainer) {
+        this.repo = repo;
+        this.eventContainer = eventContainer;
+        this.calendarContainer = calendarContainer;
     }
 
-    public List<User> GetAllUsers() {
+    public List<User> getAllUsers() {
         return UserMapper.toModelList((List<UserDTO>)repo.findAll());
     }
 
-    public User GetUserById(int userID) {
+    public User getUserById(int userID) {
         return UserMapper.toModel(repo.findById(userID).orElse(null));
     }
 
 
-    public User CreateUser(User user){
+    public User createUser(User user){
         return UserMapper.toModel(repo.save(UserMapper.toDTO(user)));
     }
 
     @Transactional
-    public boolean DeleteUser(int userID){
+    public boolean deleteUser(int userID){
         try {
             eventContainer.deleteAllEventsByUserId(userID);
             calendarContainer.deleteAllCalendarsByUserId(userID);

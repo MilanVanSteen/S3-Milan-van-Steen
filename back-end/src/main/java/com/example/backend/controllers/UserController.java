@@ -19,8 +19,8 @@ public class UserController {
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<User>> GetAllUsers() {
-        List<User> users = userContainer.GetAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userContainer.getAllUsers();
         if (users == null || !users.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/getUserById")
-    public ResponseEntity<User> GetUserById(@RequestParam int userID) {
-        User user = userContainer.GetUserById(userID);
+    public ResponseEntity<User> getUserById(@RequestParam int userID) {
+        User user = userContainer.getUserById(userID);
         if (user != null) {
             return ResponseEntity.ok(user);
         }
@@ -38,14 +38,14 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public ResponseEntity<User> CreateUser(@RequestBody User user) {
-        User createdUser = userContainer.CreateUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userContainer.createUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
     @DeleteMapping("/deleteUser")
-    public ResponseEntity<String> DeleteUser(@RequestParam int userID) {
-        if (userContainer.DeleteUser(userID)){
+    public ResponseEntity<String> deleteUser(@RequestParam int userID) {
+        if (userContainer.deleteUser(userID)){
             return ResponseEntity.ok("Deleted user");
         }
         return ResponseEntity.noContent().build();

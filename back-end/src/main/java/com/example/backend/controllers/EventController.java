@@ -22,8 +22,8 @@ public class EventController {
     }
 
     @GetMapping("/getAllEvents")
-    public ResponseEntity<List<Event>> GetAllEvents() {
-        List<Event> events = eventContainer.GetAllEvents();
+    public ResponseEntity<List<Event>> getAllEvents() {
+        List<Event> events = eventContainer.getAllEvents();
         if (events == null || !events.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -32,8 +32,8 @@ public class EventController {
     }
 
     @GetMapping("/getEventById")
-    public ResponseEntity<Event> GetEventById(@RequestParam int eventID) {
-        Event event = eventContainer.GetEventById(eventID);
+    public ResponseEntity<Event> getEventById(@RequestParam int eventID) {
+        Event event = eventContainer.getEventById(eventID);
         if (event != null) {
             return ResponseEntity.ok(event);
         }
@@ -41,17 +41,17 @@ public class EventController {
     }
 
     @PostMapping("/createEvent")
-    public ResponseEntity<Event> CreateEvent(@RequestBody Event event) {
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         int userID = event.getUser().getUserID();
-        event.setUser(userContainer.GetUserById(userID));
+        event.setUser(userContainer.getUserById(userID));
 
-        Event createdEvent = eventContainer.CreateEvent(event);
+        Event createdEvent = eventContainer.createEvent(event);
         return ResponseEntity.ok(createdEvent);
     }
 
     @DeleteMapping("/deleteEvent")
-    public ResponseEntity<String> DeleteEvent(@RequestParam int eventID) {
-        if (eventContainer.DeleteEvent(eventID)){
+    public ResponseEntity<String> deleteEvent(@RequestParam int eventID) {
+        if (eventContainer.deleteEvent(eventID)){
             return ResponseEntity.ok("Deleted event");
         }
         return ResponseEntity.noContent().build();

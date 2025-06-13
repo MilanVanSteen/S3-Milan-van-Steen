@@ -19,8 +19,8 @@ public class CategoryController {
     }
 
     @GetMapping("/getAllCategories")
-    public ResponseEntity<List<Category>> GetAllCategories() {
-        List<Category> categories = categoryContainer.GetAllCategories();
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> categories = categoryContainer.getAllCategories();
         if (categories == null || !categories.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -29,8 +29,8 @@ public class CategoryController {
     }
 
     @GetMapping("/getCategoryById")
-    public ResponseEntity<Category> GetCategoryById(@RequestParam int categoryID) {
-        Category category = categoryContainer.GetCategoryById(categoryID);
+    public ResponseEntity<Category> getCategoryById(@RequestParam int categoryID) {
+        Category category = categoryContainer.getCategoryById(categoryID);
         if (category != null) {
             return ResponseEntity.ok(category);
         }
@@ -38,14 +38,14 @@ public class CategoryController {
     }
 
     @PostMapping("/createCategory")
-    public ResponseEntity<Category> CreateCategory(@RequestBody Category category) {
-        Category createdCategory = categoryContainer.CreateCategory(category);
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+        Category createdCategory = categoryContainer.createCategory(category);
         return ResponseEntity.ok(createdCategory);
     }
 
     @DeleteMapping("/deleteCategory")
-    public ResponseEntity<String> DeleteCategory(@RequestParam int categoryID) {
-        if (categoryContainer.DeleteCategory(categoryID)){
+    public ResponseEntity<String> deleteCategory(@RequestParam int categoryID) {
+        if (categoryContainer.deleteCategory(categoryID)){
             return ResponseEntity.ok("Deleted category");
         }
         return ResponseEntity.noContent().build();

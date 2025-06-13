@@ -12,24 +12,24 @@ import java.util.List;
 public class CategoryContainer {
     private final CategoryInterface repo;
 
-    public CategoryContainer(CategoryInterface _repo) {
-        this.repo = _repo;
+    public CategoryContainer(CategoryInterface repo) {
+        this.repo = repo;
     }
 
-    public List<Category> GetAllCategories() {
+    public List<Category> getAllCategories() {
         return CategoryMapper.toModelList((List<CategoryDTO>)repo.findAll());
     }
 
-    public Category GetCategoryById(int categoryID) {
+    public Category getCategoryById(int categoryID) {
         return CategoryMapper.toModel(repo.findById(categoryID).orElse(null));
     }
 
 
-    public Category CreateCategory(Category category){
+    public Category createCategory(Category category){
         return CategoryMapper.toModel(repo.save(CategoryMapper.toDTO(category)));
     }
 
-    public boolean DeleteCategory(int categoryID){
+    public boolean deleteCategory(int categoryID){
         try {
             repo.deleteById(categoryID);
             return true;

@@ -26,8 +26,8 @@ public class CalendarController {
     }
 
     @GetMapping("/getAllCalendars")
-    public ResponseEntity<List<Calendar>> GetAllCalendars() {
-        List<Calendar> calendars = calendarContainer.GetAllCalendars();
+    public ResponseEntity<List<Calendar>> getAllCalendars() {
+        List<Calendar> calendars = calendarContainer.getAllCalendars();
         if (calendars == null || !calendars.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -36,8 +36,8 @@ public class CalendarController {
     }
 
     @GetMapping("/getCalendarById")
-    public ResponseEntity<Calendar> GetCalendarById(@RequestParam int calendarID) {
-        Calendar calendar = calendarContainer.GetCalendarById(calendarID);
+    public ResponseEntity<Calendar> getCalendarById(@RequestParam int calendarID) {
+        Calendar calendar = calendarContainer.getCalendarById(calendarID);
         if (calendar != null) {
             return ResponseEntity.ok(calendar);
         }
@@ -45,8 +45,8 @@ public class CalendarController {
     }
 
     @GetMapping("/getCalendarsByUserID")
-    public ResponseEntity<List<Calendar>> GetCalendarsByUserID(@RequestParam int userID) {
-        List<Calendar> calendars = calendarContainer.GetCalendarsByUserID(userID);
+    public ResponseEntity<List<Calendar>> getCalendarsByUserID(@RequestParam int userID) {
+        List<Calendar> calendars = calendarContainer.getCalendarsByUserID(userID);
         if (calendars == null || !calendars.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -55,31 +55,31 @@ public class CalendarController {
     }
 
     @PostMapping("/createCalendar")
-    public ResponseEntity<Calendar> CreateCalendar(@RequestBody Calendar calendar) {
+    public ResponseEntity<Calendar> createCalendar(@RequestBody Calendar calendar) {
         int userID = calendar.getUser().getUserID();
-        calendar.setUser(userContainer.GetUserById(userID));
+        calendar.setUser(userContainer.getUserById(userID));
 
-        Calendar createdCalendar = calendarContainer.CreateCalendar(calendar);
+        Calendar createdCalendar = calendarContainer.createCalendar(calendar);
         return ResponseEntity.ok(createdCalendar);
     }
 
     @PostMapping("/saveCalendarEvent")
-    public ResponseEntity<String> SaveCalendarEvent(@RequestBody CalendarEvent calendarEvent) {
+    public ResponseEntity<String> saveCalendarEvent(@RequestBody CalendarEvent calendarEvent) {
         int calendarID = calendarEvent.getCalendar().getCalendarID();
-        calendarEvent.setCalendar(calendarContainer.GetCalendarById(calendarID));
+        calendarEvent.setCalendar(calendarContainer.getCalendarById(calendarID));
 
         int eventID = calendarEvent.getEvent().getEventID();
-        calendarEvent.setEvent(eventContainer.GetEventById(eventID));
+        calendarEvent.setEvent(eventContainer.getEventById(eventID));
 
-        if (calendarContainer.SaveCalendarEvent(calendarEvent)){
+        if (calendarContainer.saveCalendarEvent(calendarEvent)){
             return ResponseEntity.ok("Saved calendarEvent");
         }
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/deleteCalendar")
-    public ResponseEntity<String> DeleteCalendar(@RequestParam int calendarID) {
-        if (calendarContainer.DeleteCalendar(calendarID)){
+    public ResponseEntity<String> deleteCalendar(@RequestParam int calendarID) {
+        if (calendarContainer.deleteCalendar(calendarID)){
             return ResponseEntity.ok("Deleted calendar");
         }
         return ResponseEntity.noContent().build();

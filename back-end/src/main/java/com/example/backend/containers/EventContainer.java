@@ -17,12 +17,12 @@ public class EventContainer {
     private final EventInterface repo;
     private final EventCategoryInterface eventCategoryRepo;
 
-    public EventContainer(EventInterface _repo, EventCategoryInterface _eventCategoryRepo) {
-        this.repo = _repo;
-        this.eventCategoryRepo = _eventCategoryRepo;
+    public EventContainer(EventInterface repo, EventCategoryInterface eventCategoryRepo) {
+        this.repo = repo;
+        this.eventCategoryRepo = eventCategoryRepo;
     }
 
-    public List<Event> GetAllEvents() {
+    public List<Event> getAllEvents() {
         List<Event> events = EventMapper.toModelList((List<EventDTO>)repo.findAll());
         for (Event event : events){
             if(event != null) {
@@ -39,7 +39,7 @@ public class EventContainer {
         return events;
     }
 
-    public Event GetEventById(int eventID) {
+    public Event getEventById(int eventID) {
         Event event = EventMapper.toModel(repo.findById(eventID).orElse(null));
         List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(eventID));
 
@@ -53,11 +53,11 @@ public class EventContainer {
     }
 
 
-    public Event CreateEvent(Event event){
+    public Event createEvent(Event event){
         return EventMapper.toModel(repo.save(EventMapper.toDTO(event)));
     }
 
-    public boolean DeleteEvent(int eventID){
+    public boolean deleteEvent(int eventID){
         try {
             repo.deleteById(eventID);
             return true;

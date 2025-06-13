@@ -20,12 +20,12 @@ public class CalendarContainer {
     private final CalendarInterface repo;
     private final CalendarEventInterface calendarEventRepo;
 
-    public CalendarContainer(CalendarInterface _repo, CalendarEventInterface _calendarEventRepo) {
-        this.repo = _repo;
-        this.calendarEventRepo = _calendarEventRepo;
+    public CalendarContainer(CalendarInterface repo, CalendarEventInterface calendarEventRepo) {
+        this.repo = repo;
+        this.calendarEventRepo = calendarEventRepo;
     }
 
-    public List<Calendar> GetAllCalendars() {
+    public List<Calendar> getAllCalendars() {
         List<Calendar> calendars = CalendarMapper.toModelList((List<CalendarDTO>)repo.findAll());
         for (Calendar calendar : calendars){
             if(calendar != null) {
@@ -42,7 +42,7 @@ public class CalendarContainer {
         return calendars;
     }
 
-    public Calendar GetCalendarById(int calendarID) {
+    public Calendar getCalendarById(int calendarID) {
         Calendar calendar = CalendarMapper.toModel(repo.findById(calendarID).orElse(null));
         List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendarID));
 
@@ -55,7 +55,7 @@ public class CalendarContainer {
         return calendar;
     }
 
-    public List<Calendar> GetCalendarsByUserID(int userID) {
+    public List<Calendar> getCalendarsByUserID(int userID) {
         List<Calendar> calendars = CalendarMapper.toModelList(repo.getCalendarsByUserID(userID));
         for (Calendar calendar : calendars){
             if(calendar != null) {
@@ -75,11 +75,11 @@ public class CalendarContainer {
         return calendars;
     }
 
-    public Calendar CreateCalendar(Calendar calendar){
+    public Calendar createCalendar(Calendar calendar){
         return CalendarMapper.toModel(repo.save(CalendarMapper.toDTO(calendar)));
     }
 
-    public boolean SaveCalendarEvent(CalendarEvent calendarEvent){
+    public boolean saveCalendarEvent(CalendarEvent calendarEvent){
         try {
             calendarEventRepo.save(CalendarEventMapper.toDTO(calendarEvent));
             return true;
@@ -88,7 +88,7 @@ public class CalendarContainer {
         }
     }
 
-    public boolean DeleteCalendar(int calendarID){
+    public boolean deleteCalendar(int calendarID){
         try {
             repo.deleteById(calendarID);
             return true;
