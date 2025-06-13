@@ -31,6 +31,13 @@ const fetchEvents = async () => {
         .filter(calendar => calendar && Array.isArray(calendar.events))
         .flatMap(calendar => calendar.events)
 
+    // Sort events by duration (longest first)
+    allEvents.sort((a, b) => {
+      const aDuration = (new Date(a.endDate) - new Date(a.startDate)) || 0
+      const bDuration = (new Date(b.endDate) - new Date(b.startDate)) || 0
+      return bDuration - aDuration
+    })
+
     events.value = allEvents.flatMap(event => {
       const expanded = []
       const start = new Date(event.startDate)
@@ -38,14 +45,16 @@ const fetchEvents = async () => {
       let d = new Date(start)
 
       while (d <= end) {
-        const part =
-            d.toDateString() === start.toDateString()
-                ? 'start'
-                : d.toDateString() === end.toDateString()
-                    ? 'end'
-                    : 'middle'
+        // Determine which part of the event this day is
+        let part = 'middle'
+        if (d.toDateString() === start.toDateString()) {
+          part = 'start'
+        } else if (d.toDateString() === end.toDateString()) {
+          part = 'end'
+        }
 
         expanded.push({
+          id: event.id,
           name: event.name,
           start: new Date(d),
           end: new Date(d),
@@ -116,10 +125,23 @@ onMounted(async () => {
                 hide-header
             >
               <template #event="{ event }">
-                <div class="custom-event" :title="event.name">
-                  {{ event.name }}
+                <div
+                    class="custom-event"
+                    :title="event.name"
+                    :class="`event-part-${event.part}`"
+                >
+                  <template v-if="event.part === 'start'">
+                    <strong>▶</strong> {{ event.name }}
+                  </template>
+                  <template v-else-if="event.part === 'middle'">
+                    <em>•</em>
+                  </template>
+                  <template v-else-if="event.part === 'end'">
+                    <strong>■</strong>
+                  </template>
                 </div>
               </template>
+
             </v-calendar>
           </v-sheet>
         </v-col>
@@ -130,22 +152,21 @@ onMounted(async () => {
 
 <style scoped>
 .custom-event {
-  display: block;
-  width: 100%;
+  display: flex;
+  align-items: center;
   height: 100%;
-  background-color: #1976d2;
-  color: white;
+  width: 100%;
   padding: 4px 8px;
-  border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 500;
+  color: white;
+  box-sizing: border-box;
+  border: 1px solid #1565c0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  border: 1px solid #1565c0;
-  cursor: pointer;
-  box-sizing: border-box;
 }
 
 .calendar-header {
@@ -177,5 +198,31 @@ onMounted(async () => {
   text-align: center;
   font-weight: 600;
   font-size: 1.25rem;
+}
+
+/* start: rounded left, solid border left */
+.event-part-start {
+  background-color: #1e88e5;
+  border-left: 4px solid #0d47a1;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+/* middle: no left/right border to join seamlessly */
+.event-part-middle {
+  background-color: #42a5f5;
+  opacity: 0.8;
+  border-left: none;
+  border-right: none;
+  margin-left: -1px;
+}
+
+/* end: rounded right, solid border right */
+.event-part-end {
+  background-color: #1565c0;
+  border-right: 4px solid #0d47a1;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-left: -1px; /* overlap left border with prev */
 }
 </style>

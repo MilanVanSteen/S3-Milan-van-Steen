@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.example.backend.Interfaces")
-@EntityScan("com.example.backend.DTOs")
+@EnableJpaRepositories("com.example.backend.interfaces")
+@EntityScan("com.example.backend.dtos")
 public class BackEndApplication {
 
     public static void main(String[] args) {

@@ -1,0 +1,23 @@
+package com.example.backend.dtos;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+
+@Entity
+@Table(name = "EventCategory")
+@Getter
+public class EventCategoryDTO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int eventCategoryID;
+
+    @ManyToOne
+    @JoinColumn(name = "EventID")
+    private EventDTO eventDTO;
+
+    @ManyToOne
+    @JoinColumn(name = "CategoryID")
+    private CategoryDTO categoryDTO;
+}
+
+
