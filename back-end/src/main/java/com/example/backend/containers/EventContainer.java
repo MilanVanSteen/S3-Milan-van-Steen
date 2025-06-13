@@ -10,6 +10,7 @@ import com.example.backend.models.Event;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class EventContainer {
                 if (categories != null && !categories.isEmpty()) {
                     boolean success = event.setEventCategories(categories);
                     if (!success) {
-                        return null;
+                        return new ArrayList<>();
                     }
                 }
             }

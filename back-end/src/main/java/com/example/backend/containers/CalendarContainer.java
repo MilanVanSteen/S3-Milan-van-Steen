@@ -34,7 +34,7 @@ public class CalendarContainer {
                 if(events != null && !events.isEmpty()) {
                     boolean success = calendar.setCalendarEvents(events);
                     if(!success) {
-                        return null;
+                        return new ArrayList<>();
                     }
                 }
             }
@@ -64,7 +64,7 @@ public class CalendarContainer {
                 if(events != null && !events.isEmpty()) {
                     boolean success = calendar.setCalendarEvents(events);
                     if(!success) {
-                        return null;
+                        return new ArrayList<>();
                     }
                 }
                 else{
