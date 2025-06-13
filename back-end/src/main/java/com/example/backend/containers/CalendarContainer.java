@@ -32,7 +32,7 @@ public class CalendarContainer {
                 List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
 
                 if(events != null && !events.isEmpty()) {
-                    boolean success = calendar.SetCalendarEvents(events);
+                    boolean success = calendar.setCalendarEvents(events);
                     if(!success) {
                         return null;
                     }
@@ -47,7 +47,7 @@ public class CalendarContainer {
         List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendarID));
 
         if(events != null && !events.isEmpty() && calendar != null) {
-            boolean success = calendar.SetCalendarEvents(events);
+            boolean success = calendar.setCalendarEvents(events);
             if(!success) {
                 return null;
             }
@@ -62,13 +62,13 @@ public class CalendarContainer {
                 List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
 
                 if(events != null && !events.isEmpty()) {
-                    boolean success = calendar.SetCalendarEvents(events);
+                    boolean success = calendar.setCalendarEvents(events);
                     if(!success) {
                         return null;
                     }
                 }
                 else{
-                    calendar.SetCalendarEvents(new ArrayList<>());
+                    calendar.setCalendarEvents(new ArrayList<>());
                 }
             }
         }

@@ -34,7 +34,7 @@ public class User {
 
     public User(){}
 
-    public List<Calendar> GetUserCalendars(){
+    public List<Calendar> getUserCalendars(){
         return calendars;
     }
 }

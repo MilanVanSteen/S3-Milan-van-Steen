@@ -29,7 +29,7 @@ public class EventContainer {
                 List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(event.getEventID()));
 
                 if (categories != null && !categories.isEmpty()) {
-                    boolean success = event.SetEventCategories(categories);
+                    boolean success = event.setEventCategories(categories);
                     if (!success) {
                         return null;
                     }
@@ -44,7 +44,7 @@ public class EventContainer {
         List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(eventID));
 
         if(categories != null && !categories.isEmpty() && event != null) {
-            boolean success = event.SetEventCategories(categories);
+            boolean success = event.setEventCategories(categories);
             if(!success) {
                 return null;
             }

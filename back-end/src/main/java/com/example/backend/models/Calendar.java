@@ -42,11 +42,11 @@ public class Calendar {
 
     public Calendar() {}
 
-    public List<Event> GetCalendarEvents(){
+    public List<Event> getCalendarEvents(){
         return events;
     }
 
-    public boolean SetCalendarEvents(List<Event> events){
+    public boolean setCalendarEvents(List<Event> events){
         if (events != null && !events.isEmpty()) {
             this.events = events;
             return true;
