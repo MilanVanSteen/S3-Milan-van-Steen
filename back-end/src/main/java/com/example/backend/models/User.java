@@ -7,6 +7,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@SuppressWarnings("unused")
 public class User {
     private int userID;
     private String email;

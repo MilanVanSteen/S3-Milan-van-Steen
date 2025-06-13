@@ -7,6 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@SuppressWarnings("unused")
 public class Calendar {
     private int calendarID;
     private User user;

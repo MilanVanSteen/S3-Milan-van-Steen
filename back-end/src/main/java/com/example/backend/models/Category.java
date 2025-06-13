@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@SuppressWarnings("unused")
 public class Category {
     private int categoryID;
     private String name;

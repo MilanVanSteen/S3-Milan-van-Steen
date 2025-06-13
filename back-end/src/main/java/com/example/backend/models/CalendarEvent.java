@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@SuppressWarnings("unused")
 public class CalendarEvent {
     @Id
     private int calendarEventID;

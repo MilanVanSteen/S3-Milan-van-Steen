@@ -8,6 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@SuppressWarnings("unused")
 public class Event {
     private int eventID;
     private User user;
