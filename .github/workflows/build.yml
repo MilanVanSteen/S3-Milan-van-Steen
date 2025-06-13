@@ -34,7 +34,7 @@ jobs:
         working-directory: back-end
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen \
-          -DskipTests
+        run: mvn -B clean verify -DskipTests org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen
+
 
