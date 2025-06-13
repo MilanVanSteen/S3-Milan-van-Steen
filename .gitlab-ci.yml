@@ -1,0 +1,31 @@
+stages:
+  - build
+  - sonar
+
+variables:
+  SONAR_HOST_URL: "http://localhost:9000"
+  SONAR_PROJECT_KEY: "s3-milan-van-steen"
+
+build-backend:
+  stage: build
+  image: maven:3.8.6-openjdk-17
+  script:
+    - cd backend
+    - mvn clean package
+  artifacts:
+    paths:
+      - backend/target/*.jar
+
+sonarqube-backend:
+  stage: sonar
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - cd backend
+    - sonar-scanner \
+        -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.sources=src \
+        -Dsonar.java.binaries=target/classes
+  only:
+    - branches
