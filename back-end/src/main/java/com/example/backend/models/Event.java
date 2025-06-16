@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -53,15 +54,16 @@ public class Event {
 
     public Event() {}
 
-    public List<Category> getEventCategories(){
+    public List<Category> getEventCategories() {
+        if (this.categories == null) {
+            this.categories = new ArrayList<>();
+        }
         return categories;
     }
 
-    public boolean setEventCategories(List<Category> categories){
+    public void setEventCategories(List<Category> categories){
         if (categories != null && !categories.isEmpty()) {
             this.categories = categories;
-            return true;
         }
-        return false;
     }
 }

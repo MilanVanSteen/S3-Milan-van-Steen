@@ -26,15 +26,10 @@ public class EventContainer {
     public List<Event> getAllEvents() {
         List<Event> events = EventMapper.toModelList((List<EventDTO>)repo.findAll());
         for (Event event : events){
-            if(event != null) {
-                List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(event.getEventID()));
+            List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(event.getEventID()));
 
-                if (categories != null && !categories.isEmpty()) {
-                    boolean success = event.setEventCategories(categories);
-                    if (!success) {
-                        return new ArrayList<>();
-                    }
-                }
+            if (!categories.isEmpty()) {
+                event.setEventCategories(categories);
             }
         }
         return events;
@@ -44,11 +39,8 @@ public class EventContainer {
         Event event = EventMapper.toModel(repo.findById(eventID).orElse(null));
         List<Category> categories = CategoryMapper.toModelList(eventCategoryRepo.findCategoriesByEventID(eventID));
 
-        if(categories != null && !categories.isEmpty() && event != null) {
-            boolean success = event.setEventCategories(categories);
-            if(!success) {
-                return null;
-            }
+        if(!categories.isEmpty() && event != null) {
+            event.setEventCategories(categories);
         }
         return event;
     }
