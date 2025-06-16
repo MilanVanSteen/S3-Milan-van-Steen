@@ -20,6 +20,7 @@ jobs:
           java-version: 17
       
       - name: Build with Maven and run tests
+        working-directory: back-end
         run: mvn clean verify
 
       - name: Run SonarQube analysis
