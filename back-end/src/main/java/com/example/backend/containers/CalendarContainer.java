@@ -27,16 +27,11 @@ public class CalendarContainer {
 
     public List<Calendar> getAllCalendars() {
         List<Calendar> calendars = CalendarMapper.toModelList((List<CalendarDTO>)repo.findAll());
-        for (Calendar calendar : calendars){
-            if(calendar != null) {
-                List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
+        for (Calendar calendar : calendars) {
+            List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
 
-                if(events != null && !events.isEmpty()) {
-                    boolean success = calendar.setCalendarEvents(events);
-                    if(!success) {
-                        return new ArrayList<>();
-                    }
-                }
+            if (!events.isEmpty()) {
+                calendar.setCalendarEvents(events);
             }
         }
         return calendars;
@@ -46,30 +41,21 @@ public class CalendarContainer {
         Calendar calendar = CalendarMapper.toModel(repo.findById(calendarID).orElse(null));
         List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendarID));
 
-        if(events != null && !events.isEmpty() && calendar != null) {
-            boolean success = calendar.setCalendarEvents(events);
-            if(!success) {
-                return null;
-            }
+        if(calendar != null && !events.isEmpty()) {
+            calendar.setCalendarEvents(events);
         }
         return calendar;
     }
 
     public List<Calendar> getCalendarsByUserID(int userID) {
         List<Calendar> calendars = CalendarMapper.toModelList(repo.getCalendarsByUserID(userID));
-        for (Calendar calendar : calendars){
-            if(calendar != null) {
-                List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
+        for (Calendar calendar : calendars) {
+            List<Event> events = EventMapper.toModelList(calendarEventRepo.findEventsByCalendarID(calendar.getCalendarID()));
 
-                if(events != null && !events.isEmpty()) {
-                    boolean success = calendar.setCalendarEvents(events);
-                    if(!success) {
-                        return new ArrayList<>();
-                    }
-                }
-                else{
-                    calendar.setCalendarEvents(new ArrayList<>());
-                }
+            if (!events.isEmpty()) {
+                calendar.setCalendarEvents(events);
+            } else {
+                calendar.setCalendarEvents(new ArrayList<>());
             }
         }
         return calendars;
