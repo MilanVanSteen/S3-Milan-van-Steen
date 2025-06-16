@@ -1,4 +1,4 @@
-name: Build and SonarQube
+name: Build, Test and SonarQube
 
 on:
   push:
@@ -10,22 +10,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: back-end   # Maven project root
+
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 17
-      
-      - name: Build with Maven and run tests
-        working-directory: back-end
+
+      - name: Cache Maven local repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Build and run tests
         run: mvn clean verify
 
       - name: Run SonarQube analysis
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectKey: your-project-key
-          organization: your-org
-          token: ${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn sonar:sonar \
+          -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen \
+          -Dsonar.organization=YMilanVanSteen \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
