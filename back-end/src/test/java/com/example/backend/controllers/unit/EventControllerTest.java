@@ -1,27 +1,28 @@
-package com.example.backend.controllers;
+package com.example.backend.controllers.unit;
 
 import com.example.backend.containers.EventContainer;
 import com.example.backend.containers.UserContainer;
 import com.example.backend.models.Event;
 import com.example.backend.models.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-@WebMvcTest(EventController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class EventControllerTest {
 
     @Autowired
@@ -46,7 +47,7 @@ class EventControllerTest {
         mockMvc.perform(get("/event/getAllEvents"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].eventID").value(1))
-                .andExpect(jsonPath("$[0].title").value("Test Event"));
+                .andExpect(jsonPath("$[0].name").value("Test Event"));
     }
 
     @Test
@@ -67,7 +68,7 @@ class EventControllerTest {
 
         mockMvc.perform(get("/event/getEventById").param("eventID", "1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Sample Event"));
+                .andExpect(jsonPath("$.name").value("Sample Event"));
     }
 
     @Test
@@ -87,7 +88,6 @@ class EventControllerTest {
         user.setUserID(10);
         event.setUser(user);
 
-        // Mocks
         when(userContainer.getUserById(10)).thenReturn(user);
         when(eventContainer.createEvent(any(Event.class))).thenReturn(event);
 
@@ -96,7 +96,7 @@ class EventControllerTest {
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventID").value(5))
-                .andExpect(jsonPath("$.title").value("Created Event"));
+                .andExpect(jsonPath("$.name").value("Created Event"));
     }
 
     @Test

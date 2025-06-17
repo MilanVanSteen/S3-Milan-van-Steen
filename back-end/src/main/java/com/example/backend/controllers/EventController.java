@@ -24,7 +24,7 @@ public class EventController {
     @GetMapping("/getAllEvents")
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventContainer.getAllEvents();
-        if (events == null || !events.iterator().hasNext()) {
+        if (!events.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(events);
