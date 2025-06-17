@@ -50,6 +50,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: List front-end files
+        run: ls -la front-end
+
       - name: Set up Node.js 18
         uses: actions/setup-node@v3
         with:
