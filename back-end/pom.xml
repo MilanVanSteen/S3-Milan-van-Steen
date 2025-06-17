@@ -81,13 +81,11 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-observation</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>context-propagation</artifactId>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

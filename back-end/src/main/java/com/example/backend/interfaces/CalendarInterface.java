@@ -11,6 +11,6 @@ import java.util.List;
 public interface CalendarInterface extends CrudRepository<CalendarDTO, Integer> {
     void deleteAllByUserDTO_UserID(int userID);
 
-    @Query("SELECT new com.example.backend.dtos.CalendarDTO(c.calendarID, c.userDTO, c.isPersonal) FROM CalendarDTO c WHERE c.userDTO.userID = ?1")
+    @Query("SELECT new com.example.backend.dtos.CalendarDTO(c.calendarID, c.userDTO, c.personal) FROM CalendarDTO c WHERE c.userDTO.userID = ?1")
     List<CalendarDTO> getCalendarsByUserID(int userID);
 }
