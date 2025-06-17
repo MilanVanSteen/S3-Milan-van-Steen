@@ -21,7 +21,7 @@ public class UserController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userContainer.getAllUsers();
-        if (users == null || !users.iterator().hasNext()) {
+        if (!users.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(users);

@@ -21,7 +21,7 @@ public class CategoryController {
     @GetMapping("/getAllCategories")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryContainer.getAllCategories();
-        if (categories == null || !categories.iterator().hasNext()) {
+        if (!categories.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(categories);

@@ -28,7 +28,7 @@ public class CalendarController {
     @GetMapping("/getAllCalendars")
     public ResponseEntity<List<Calendar>> getAllCalendars() {
         List<Calendar> calendars = calendarContainer.getAllCalendars();
-        if (calendars == null || !calendars.iterator().hasNext()) {
+        if (!calendars.iterator().hasNext()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(calendars);
