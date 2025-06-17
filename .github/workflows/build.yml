@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,12 +40,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
-  frontend-e2e:
+  build-frontend:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: front-end   # Your frontend folder
-    needs: build
+        working-directory: front-end
+    needs: build-backend
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -58,11 +58,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Start frontend dev server in background
-        run: npm run dev &
+      - name: Run Cypress tests with server start
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run dev
+          wait-on: http://localhost:5173
+          wait-on-timeout: 60  # seconds to wait
 
-      - name: Wait for frontend to be ready
-        run: npx wait-on http://localhost:5173
-
-      - name: Run Cypress tests
-        run: npx cypress run
