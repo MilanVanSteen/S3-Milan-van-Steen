@@ -8,11 +8,11 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  backend:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: back-end   # Maven project root
+        working-directory: back-end
 
     steps:
       - name: Checkout repo
@@ -38,5 +38,58 @@ jobs:
       - name: Run SonarQube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn sonar:sonar -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn sonar:sonar \
+              -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen \
+              -Dsonar.organization=milanvansteen \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
+  frontend-e2e:
+    runs-on: ubuntu-latest
+    needs: backend   # run after backend finishes successfully
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: front-end
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: front-end
+
+      - name: Start backend server
+        # adjust command to your backend startup if needed, e.g. java -jar or mvn spring-boot:run
+        run: |
+          # if backend is a jar, for example:
+          # java -jar back-end/target/backend.jar &
+          # or start from source if needed, or skip if backend already running in this job's container
+          echo "Backend assumed running or mocked"
+
+      - name: Start frontend preview server
+        run: npm run preview &
+        working-directory: front-end
+
+      - name: Wait for frontend to be ready
+        run: npx wait-on http://localhost:5173
+
+      - name: Run Cypress tests
+        run: npm run test:e2e
+        working-directory: front-end
+
+      - name: Upload Cypress artifacts (optional)
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-artifacts
+          path: |
+            front-end/cypress/videos
+            front-end/cypress/screenshots
