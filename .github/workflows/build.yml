@@ -1,4 +1,4 @@
-name: Build, Test and SonarQube
+name: Build, Test, SonarQube and Cypress E2E
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  backend:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: back-end
+        working-directory: back-end   # Your backend folder
 
     steps:
       - name: Checkout repo
@@ -32,7 +32,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-
 
-      - name: Build and run tests
+      - name: Build and run backend tests
         run: mvn clean verify
 
       - name: Run SonarQube analysis
@@ -47,49 +47,27 @@ jobs:
 
   frontend-e2e:
     runs-on: ubuntu-latest
-    needs: backend   # run after backend finishes successfully
-
+    defaults:
+      run:
+        working-directory: front-end   # Your frontend folder
+    needs: build
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: npm ci
-        working-directory: front-end
 
-      - name: Build frontend
-        run: npm run build
-        working-directory: front-end
-
-      - name: Start backend server
-        # adjust command to your backend startup if needed, e.g. java -jar or mvn spring-boot:run
-        run: |
-          # if backend is a jar, for example:
-          # java -jar back-end/target/backend.jar &
-          # or start from source if needed, or skip if backend already running in this job's container
-          echo "Backend assumed running or mocked"
-
-      - name: Start frontend preview server
-        run: npm run preview &
-        working-directory: front-end
+      - name: Start frontend dev server in background
+        run: npm run dev &
 
       - name: Wait for frontend to be ready
         run: npx wait-on http://localhost:5173
 
       - name: Run Cypress tests
-        run: npm run test:e2e
-        working-directory: front-end
-
-      - name: Upload Cypress artifacts (optional)
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-artifacts
-          path: |
-            front-end/cypress/videos
-            front-end/cypress/screenshots
+        run: npx cypress run
