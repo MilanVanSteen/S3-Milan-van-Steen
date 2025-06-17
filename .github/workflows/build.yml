@@ -38,12 +38,7 @@ jobs:
       - name: Run SonarQube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn sonar:sonar \
-              -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen \
-              -Dsonar.organization=milanvansteen \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+        run: mvn sonar:sonar -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
   frontend-e2e:
     runs-on: ubuntu-latest
