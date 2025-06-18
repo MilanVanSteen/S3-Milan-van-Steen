@@ -45,13 +45,13 @@ jobs:
 
       - name: Check Docker secrets
         run: |
-          echo "Username length: ${{ secrets.DOCKER_HUB_USERNAME }}" | wc -c
+          echo "Username length: ${{ secrets.DOCKERHUB_USERNAME }}" | wc -c
           echo "Password length: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | wc -c
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Push backend image to Docker Hub
@@ -92,16 +92,16 @@ jobs:
 
       - name: Check Docker secrets
         run: |
-          echo "Username length: ${{ secrets.DOCKER_HUB_USERNAME }}" | wc -c
+          echo "Username length: ${{ secrets.DOCKERHUB_USERNAME }}" | wc -c
           echo "Password length: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | wc -c
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Push frontend image to Docker Hub
         run: docker push milanvansteen/s3-milan-van-steen-frontend:latest
 
-        
+
