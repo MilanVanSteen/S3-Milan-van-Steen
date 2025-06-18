@@ -104,3 +104,4 @@ jobs:
       - name: Push frontend image to Docker Hub
         run: docker push milanvansteen/s3-milan-van-steen-frontend:latest
 
+        
