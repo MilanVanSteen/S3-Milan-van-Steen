@@ -65,6 +65,9 @@ jobs:
         with:
           start: npm run dev
           wait-on: http://localhost:5173
-          wait-on-timeout: 60  # seconds to wait
+          wait-on-timeout: 60
           working-directory: front-end
+        env:
+          VITE_ENV: ci
+
 

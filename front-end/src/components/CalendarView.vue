@@ -26,10 +26,26 @@ const fetchUser = async () => {
 
 const fetchEvents = async () => {
   try {
-    const calendars = await client.getCalendarsByUserID(currentUser.value.userID)
-    const allEvents = calendars
-        .filter(calendar => calendar && Array.isArray(calendar.events))
-        .flatMap(calendar => calendar.events)
+    let allEvents = [];
+
+    if (import.meta.env.VITE_ENV === 'ci') {
+      // CI mode: load mock events from public/mock/events.json
+      try {
+        const response = await fetch('/mock/events.json');
+        const mockCalendars = await response.json();
+        allEvents = mockCalendars
+            .filter(calendar => calendar && Array.isArray(calendar.events))
+            .flatMap(calendar => calendar.events);
+      } catch (error) {
+        console.error('Failed to load mock events:', error);
+      }
+    } else {
+      // Normal mode: fetch real data from backend
+      const calendars = await client.getCalendarsByUserID(currentUser.value.userID);
+      allEvents = calendars
+          .filter(calendar => calendar && Array.isArray(calendar.events))
+          .flatMap(calendar => calendar.events);
+    }
 
     // Sort events by duration (longest first)
     allEvents.sort((a, b) => {

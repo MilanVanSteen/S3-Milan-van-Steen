@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Mock Calendar",
+    "events": [
+      {
+        "id": 101,
+        "title": "Mock Event 1",
+        "start": "2025-06-01",
+        "end": "2025-06-01"
+      },
+      {
+        "id": 102,
+        "title": "Mock Event 2",
+        "start": "2025-06-02",
+        "end": "2025-06-02"
+      }
+    ]
+  }
+]
