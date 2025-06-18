@@ -16,12 +16,16 @@ const today = ref(new Date())
 const adapter = useDate()
 
 const fetchUser = async () => {
-  try {
-    currentUser.value = await client.getUserById(route.params.userID)
-  } catch (err) {
-    console.error('Error fetching user:', err)
-    throw new Error('User fetch failed')
-  }
+  if (import.meta.env.VITE_ENV === 'ci') {
+    // In CI/mock environment, just set a fake user
+    currentUser.value = { userID: 2, name: 'Mock User' }
+  } else {
+    try {
+      currentUser.value = await client.getUserById(route.params.userID)
+    } catch (err) {
+      console.error('Error fetching user:', err)
+      throw new Error('User fetch failed')
+    }
 }
 
 const fetchEvents = async () => {
@@ -29,6 +33,7 @@ const fetchEvents = async () => {
     let allEvents = [];
 
     if (import.meta.env.VITE_ENV === 'ci') {
+      console.log("VITE_ENV:", import.meta.env.VITE_ENV);
       // CI mode: load mock events from public/mock/events.json
       try {
         const response = await fetch('/mock/events.json');
