@@ -3,7 +3,7 @@ services:
   backend:
     build: ./back-end
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:sqlserver://mssql:1433;databaseName=eventfinder
       - SPRING_DATASOURCE_USERNAME=sa
@@ -18,7 +18,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - back-end
+      - backend
     networks:
       - app-network
 
