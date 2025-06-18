@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   backend:
-    build: ./back-end
+    image: milanvansteen/eventfinder-backend:latest
     ports:
       - "8081:8080"
     environment:
@@ -14,29 +13,10 @@ services:
       - app-network
 
   frontend:
-    build: ./front-end
+    image: milanvansteen/eventfinder-frontend:latest
     ports:
       - "80:80"
     depends_on:
       - backend
     networks:
       - app-network
-
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong!Pass123
-    ports:
-      - "1433:1433"
-    volumes:
-      - mssql_data:/var/opt/mssql
-    networks:
-      - app-network
-
-volumes:
-  mssql_data:
-
-networks:
-  app-network:
-    driver: bridge

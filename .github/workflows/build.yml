@@ -1,4 +1,4 @@
-name: Build, Test, SonarQube and Cypress E2E
+name: Build, Test, SonarQube, Cypress E2E, and Docker Push
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: back-end   # Your backend folder
+        working-directory: back-end   # My backend folder
 
     steps:
       - name: Checkout repo
@@ -41,7 +41,16 @@ jobs:
         run: mvn sonar:sonar -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: Build Docker image for backend
-        run: docker build -t eventfinder-backend .
+        run: docker build -t milanvansteen/s3-milan-van-steen-backend:latest .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push backend image to Docker Hub
+        run: docker push milanvansteen/s3-milan-van-steen-backend:latest
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -74,6 +83,14 @@ jobs:
           VITE_ENV: ci
 
       - name: Build Docker image for frontend
-        run: docker build -t eventfinder-frontend ./front-end 
+        run: docker build -t milanvansteen/s3-milan-van-steen-frontend:latest ./front-end
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push frontend image to Docker Hub
+        run: docker push milanvansteen/s3-milan-van-steen-frontend:latest
 
