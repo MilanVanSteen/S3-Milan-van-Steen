@@ -18,7 +18,7 @@ const adapter = useDate()
 const fetchUser = async () => {
   if (import.meta.env.VITE_ENV === 'ci') {
     // In CI/mock environment, just set a fake user
-    currentUser.value = { userID: 2, name: 'Mock User' }
+    currentUser.value = {userID: 2, name: 'Mock User'}
   } else {
     try {
       currentUser.value = await client.getUserById(route.params.userID)
@@ -26,6 +26,7 @@ const fetchUser = async () => {
       console.error('Error fetching user:', err)
       throw new Error('User fetch failed')
     }
+  }
 }
 
 const fetchEvents = async () => {
