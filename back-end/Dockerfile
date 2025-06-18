@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Package with Maven (skip tests to speed up build)
+RUN chmod +x mvnw
 RUN ./mvnw package -DskipTests
 
 # Expose Spring Boot port
