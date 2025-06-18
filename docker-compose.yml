@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  backend:
+    build: ./back-end
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://mssql:1433;databaseName=eventfinder
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=YourStrong!Pass123
+    depends_on:
+      - mssql
+    networks:
+      - app-network
+
+  frontend:
+    build: ./front-end
+    ports:
+      - "80:80"
+    depends_on:
+      - back-end
+    networks:
+      - app-network
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Pass123
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - app-network
+
+volumes:
+  mssql_data:
+
+networks:
+  app-network:
+    driver: bridge
