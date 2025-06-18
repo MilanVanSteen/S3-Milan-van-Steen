@@ -43,6 +43,11 @@ jobs:
       - name: Build Docker image for backend
         run: docker build -t milanvansteen/s3-milan-van-steen-backend:latest .
 
+      - name: Check Docker secrets
+        run: |
+          echo "Username length: ${{ secrets.DOCKER_HUB_USERNAME }}" | wc -c
+          echo "Password length: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | wc -c
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -84,6 +89,11 @@ jobs:
 
       - name: Build Docker image for frontend
         run: docker build -t milanvansteen/s3-milan-van-steen-frontend:latest ./front-end
+
+      - name: Check Docker secrets
+        run: |
+          echo "Username length: ${{ secrets.DOCKER_HUB_USERNAME }}" | wc -c
+          echo "Password length: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | wc -c
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
