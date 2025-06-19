@@ -77,6 +77,11 @@ jobs:
         run: npm ci
         working-directory: front-end
 
+      - name: Run unit tests (Vitest)
+        run: npm run test -- --coverage
+        working-directory: front-end
+
+
       - name: Run Cypress tests with server start
         uses: cypress-io/github-action@v5
         with:
