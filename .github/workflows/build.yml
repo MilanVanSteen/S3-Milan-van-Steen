@@ -56,6 +56,7 @@ jobs:
           echo "  scrape_interval: 5s" >> prometheus.yml
           echo "scrape_configs:" >> prometheus.yml
           echo "  - job_name: 'backend'" >> prometheus.yml
+          echo "    metrics_path: /actuator/prometheus" >> prometheus.yml
           echo "    static_configs:" >> prometheus.yml
           echo "      - targets: ['host.docker.internal:8080']" >> prometheus.yml
 
@@ -64,6 +65,7 @@ jobs:
           docker run -d --name prometheus -p 9090:9090 \
             -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml \
             prom/prometheus
+
 
       - name: Wait for Prometheus to start and scrape metrics
         run: |
