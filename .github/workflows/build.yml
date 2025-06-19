@@ -69,7 +69,8 @@ jobs:
       - name: Push CI metric to Pushgateway
         shell: bash
         run: |
-          echo "ci_duration_seconds 1.4" | curl --data-binary @- http://localhost:9091/metrics/job/ci
+          curl -X DELETE http://localhost:9091/metrics/job/ci/instance/
+          echo "ci_duration_seconds 1.4" | curl --data-binary @- http://localhost:9091/metrics/job/ci/instance/
 
       - name: Run Prometheus container
         run: |
