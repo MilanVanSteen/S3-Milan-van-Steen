@@ -53,7 +53,7 @@ jobs:
       - name: Run Prometheus container
         run: |
           docker run -d --name prometheus -p 9090:9090 \
-            -v $PWD/back-end/prometheus.yml:/etc/prometheus/prometheus.yml \
+            -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml \
             prom/prometheus
 
       - name: Wait for Prometheus to start and scrape metrics
