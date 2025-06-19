@@ -56,12 +56,6 @@ jobs:
             -v $GITHUB_WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
             prom/prometheus
 
-      - name: Run Prometheus container
-        run: |
-          docker run -d --name prometheus -p 9090:9090 \
-            -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml \
-            prom/prometheus
-
       - name: Wait for Prometheus to start and scrape metrics
         run: |
           for i in {1..15}; do
