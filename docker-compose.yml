@@ -1,6 +1,6 @@
 services:
   backend:
-    image: milanvansteen/eventfinder-backend:latest
+    image: s3-milan-van-steen-backend:latest
     ports:
       - "8081:8080"
     environment:
@@ -13,10 +13,40 @@ services:
       - app-network
 
   frontend:
-    image: milanvansteen/eventfinder-frontend:latest
+    image: s3-milan-van-steen-frontend:latest
     ports:
       - "80:80"
     depends_on:
       - backend
     networks:
       - app-network
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Pass123
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - app-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
