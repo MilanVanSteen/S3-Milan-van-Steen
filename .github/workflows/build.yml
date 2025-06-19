@@ -50,6 +50,10 @@ jobs:
             fi
           done
 
+      - name: Run Prometheus Pushgateway container
+        run: |
+          docker run -d --name pushgateway -p 9091:9091 prom/pushgateway
+
       - name: Run Prometheus container
         run: |
           docker run -d --name prometheus -p 9090:9090 \
