@@ -81,6 +81,12 @@ jobs:
         run: npm run test -- --coverage
         working-directory: front-end
 
+      - name: Run SonarQube analysis for frontend
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
+        run: |
+          sonar-scanner -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen-frontend -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN_FRONTEND }} -Dsonar.sources=./front-end/src -Dsonar.javascript.lcov.reportPaths=./front-end/coverage/lcov.info
+
 
       - name: Run Cypress tests with server start
         uses: cypress-io/github-action@v5
