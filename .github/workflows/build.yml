@@ -69,12 +69,38 @@ jobs:
       - name: Show Pushgateway container logs before push
         run: docker logs pushgateway || echo "No logs found"
 
-      - name: Push CI metric to Pushgateway (verbose)
+      
+      - name: Push and verify CI duration metric to Pushgateway
         shell: bash
         run: |
+          set -euo pipefail
+
+          PUSHGATEWAY_URL="http://localhost:9091"
+          JOB_NAME="ci"
+          INSTANCE_NAME="github-runner"
+          METRIC_NAME="ci_duration_seconds"
           METRIC_VALUE=7.7
-          echo -e "# TYPE ci_duration_seconds gauge\nci_duration_seconds ${METRIC_VALUE}" | \
-            curl -v --data-binary @- http://localhost:9091/metrics/job/ci/instance/github-runner
+
+          echo "Pushing metric ${METRIC_NAME}=${METRIC_VALUE} to Pushgateway..."
+
+          echo -e "# TYPE ${METRIC_NAME} gauge\n${METRIC_NAME} ${METRIC_VALUE}" | \
+            curl --fail -v --data-binary @- "${PUSHGATEWAY_URL}/metrics/job/${JOB_NAME}/instance/${INSTANCE_NAME}"
+
+          echo "Waiting 2 seconds for Pushgateway to register metric..."
+          sleep 2
+
+          echo "Verifying metric visibility in Pushgateway..."
+
+          METRIC_FOUND=$(curl --fail -s "${PUSHGATEWAY_URL}/metrics" | grep -w "${METRIC_NAME}" || true)
+
+          if [[ -z "$METRIC_FOUND" ]]; then
+            echo "ERROR: Metric '${METRIC_NAME}' not found in Pushgateway metrics!"
+            exit 1
+          else
+            echo "SUCCESS: Metric '${METRIC_NAME}' found in Pushgateway metrics:"
+            echo "$METRIC_FOUND"
+          fi
+
 
       - name: Verify metric after push
         run: |
