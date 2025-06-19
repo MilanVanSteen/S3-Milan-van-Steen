@@ -100,6 +100,9 @@ jobs:
             echo "SUCCESS: Metric '${METRIC_NAME}' found in Pushgateway metrics:"
             echo "$METRIC_FOUND"
           fi
+          
+          # Check metrics for your job and instance specifically
+          curl -s http://localhost:9091/metrics/job/ci/instance/github-runner
 
 
       - name: Verify metric after push
