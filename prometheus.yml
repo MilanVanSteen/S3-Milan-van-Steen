@@ -5,8 +5,3 @@ scrape_configs:
   - job_name: 'pushgateway'
     static_configs:
       - targets: ['host.docker.internal:9091']  # for Docker Desktop
-
-  - job_name: 'eventfinder-backend'
-    metrics_path: '/actuator/prometheus'
-    static_configs:
-      - targets: ['host.docker.internal:8080']
