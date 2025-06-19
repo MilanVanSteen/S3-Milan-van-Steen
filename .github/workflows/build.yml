@@ -24,6 +24,9 @@ jobs:
       - name: Run backend container in detached mode
         run: docker run -d --name backend -p 8080:8080 milanvansteen/s3-milan-van-steen-backend:latest
 
+      - name: Show backend container logs
+        run: docker logs backend
+
       - name: Wait for backend container to be healthy
         run: |
           for i in {1..30}; do
