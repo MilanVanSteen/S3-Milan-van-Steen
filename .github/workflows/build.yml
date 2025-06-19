@@ -54,17 +54,21 @@ jobs:
         run: |
           docker run -d --name pushgateway -p 9091:9091 prom/pushgateway
 
+      - name: Push CI metric to Pushgateway
+        run: |
+          echo "ci_duration_seconds{job=\"ci\"} 4.2" | curl --data-binary @- http://localhost:9091/metrics/job/ci
+
       - name: Run Prometheus container
         run: |
           docker run -d --name prometheus -p 9090:9090 \
             -v $GITHUB_WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
             prom/prometheus
 
-      - name: Wait for Prometheus to start and scrape metrics
+      - name: Wait for Prometheus to scrape Pushgateway
         run: |
           for i in {1..15}; do
-            if curl -s http://localhost:9090/metrics | grep 'backend'; then
-              echo "Prometheus scraping backend metrics!"
+            if curl -s http://localhost:9090/api/v1/query?query=ci_duration_seconds | grep 'ci_duration_seconds'; then
+              echo "Prometheus has scraped Pushgateway CI metric!"
               break
             fi
             sleep 2
