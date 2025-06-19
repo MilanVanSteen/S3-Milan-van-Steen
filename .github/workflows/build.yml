@@ -67,9 +67,11 @@ jobs:
           done
 
       - name: Push CI metric to Pushgateway
+        shell: bash
         run: |
           METRIC_VALUE=7.7
-          echo "ci_duration_seconds{job=\"ci\",instance=\"github-runner\"} $METRIC_VALUE" | curl --data-binary @- http://localhost:9091/metrics/job/ci/instance/github-runner
+          echo -e "# TYPE ci_duration_seconds gauge\nci_duration_seconds ${METRIC_VALUE}" | \
+            curl --data-binary @- http://localhost:9091/metrics/job/ci/instance/github-runner
 
       - name: Verify metric
         run: |
