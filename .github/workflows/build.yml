@@ -53,10 +53,23 @@ jobs:
       - name: Run Pushgateway container
         run: |
           docker run -d --name pushgateway -p 9091:9091 prom/pushgateway
+        
+      - name: Wait for Pushgateway to be ready
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:9091/metrics | grep 'pushgateway_build_info'; then
+              echo "Pushgateway is up!"
+              break
+            else
+              echo "Waiting for Pushgateway..."
+              sleep 2
+            fi
+          done
 
       - name: Push CI metric to Pushgateway
+        shell: bash
         run: |
-          echo "ci_duration_seconds{job=\"ci\"} 4.2" | curl --data-binary @- http://localhost:9091/metrics/job/ci
+          echo "ci_duration_seconds 4.2" | curl --data-binary @- http://localhost:9091/metrics/job/ci
 
       - name: Run Prometheus container
         run: |
