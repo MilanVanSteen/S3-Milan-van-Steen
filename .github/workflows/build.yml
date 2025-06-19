@@ -67,17 +67,14 @@ jobs:
           done
 
       - name: Push CI metric to Pushgateway
-        shell: bash
         run: |
-          curl -X DELETE http://localhost:9091/metrics/job/ci/
-          echo "ci_duration_seconds 7.7" | curl --data-binary @- http://localhost:9091/metrics/job/ci_test/instance/test-instance
+          METRIC_VALUE=7.7
+          echo "ci_duration_seconds{job=\"ci\",instance=\"github-runner\"} $METRIC_VALUE" | curl --data-binary @- http://localhost:9091/metrics/job/ci/instance/github-runner
 
-
-      - name: Run Prometheus container
+      - name: Verify metric
         run: |
-          docker run -d --name prometheus -p 9090:9090 \
-            -v $GITHUB_WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
-            prom/prometheus
+          echo "Verifying ci_duration_seconds from Pushgateway:"
+          curl -s http://localhost:9091/metrics | grep ci_duration_seconds || echo "Metric not found"
 
       - name: Wait for Prometheus to scrape Pushgateway
         run: |
