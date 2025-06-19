@@ -66,17 +66,30 @@ jobs:
             fi
           done
 
-      - name: Push CI metric to Pushgateway
+      - name: Show Pushgateway container logs before push
+        run: docker logs pushgateway || echo "No logs found"
+
+      - name: Push CI metric to Pushgateway (verbose)
         shell: bash
         run: |
           METRIC_VALUE=7.7
           echo -e "# TYPE ci_duration_seconds gauge\nci_duration_seconds ${METRIC_VALUE}" | \
-            curl --data-binary @- http://localhost:9091/job/ci/instance/github-runner
+            curl -v --data-binary @- http://localhost:9091/job/ci/instance/github-runner
 
-      - name: Verify metric
+      - name: Verify metric after push
         run: |
-          echo "Verifying ci_duration_seconds from Pushgateway:"
+          echo "Verifying ci_duration_seconds from Pushgateway after push:"
           curl -s http://localhost:9091/metrics | grep ci_duration_seconds || echo "Metric not found"
+
+      - name: Manual test push and verify
+        run: |
+          echo -e "# TYPE test_metric gauge\ntest_metric 42" | \
+            curl -v --data-binary @- http://localhost:9091/job/test/instance/test-instance
+          echo "Metrics after test push:"
+          curl -s http://localhost:9091/metrics | grep test_metric || echo "Test metric not found"
+
+      - name: Show Pushgateway container logs after pushes
+        run: docker logs pushgateway || echo "No logs found"
 
       - name: Wait for Prometheus to scrape Pushgateway
         run: |
