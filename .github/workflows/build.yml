@@ -74,7 +74,7 @@ jobs:
         run: |
           METRIC_VALUE=7.7
           echo -e "# TYPE ci_duration_seconds gauge\nci_duration_seconds ${METRIC_VALUE}" | \
-            curl -v --data-binary @- http://localhost:9091/job/ci/instance/github-runner
+            curl -v --data-binary @- http://localhost:9091/metrics/job/ci/instance/github-runner
 
       - name: Verify metric after push
         run: |
@@ -84,7 +84,7 @@ jobs:
       - name: Manual test push and verify
         run: |
           echo -e "# TYPE test_metric gauge\ntest_metric 42" | \
-            curl -v --data-binary @- http://localhost:9091/job/test/instance/test-instance
+            curl -v --data-binary @- http://localhost:9091/metrics/job/test/instance/test-instance
           echo "Metrics after test push:"
           curl -s http://localhost:9091/metrics | grep test_metric || echo "Test metric not found"
 
