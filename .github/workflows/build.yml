@@ -71,7 +71,7 @@ jobs:
         run: |
           METRIC_VALUE=7.7
           echo -e "# TYPE ci_duration_seconds gauge\nci_duration_seconds ${METRIC_VALUE}" | \
-            curl --data-binary @- http://localhost:9091/metrics/job/ci/instance/github-runner
+            curl --data-binary @- http://localhost:9091/job/ci/instance/github-runner
 
       - name: Verify metric
         run: |
