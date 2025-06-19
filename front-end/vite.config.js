@@ -17,5 +17,11 @@ export default defineConfig({
     deps: {
       inline: ['vuetify'],
     },
+    coverage: {
+      reporter: ['text', 'lcov'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.{ts,js,vue}'],
+      exclude: ['**/*.spec.ts'],
+    },
   },
 })
