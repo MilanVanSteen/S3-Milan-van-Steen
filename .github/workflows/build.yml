@@ -35,6 +35,20 @@ jobs:
       - name: Build and run backend tests
         run: mvn clean verify
 
+      - name: Start backend app in background
+        run: |
+          mvn spring-boot:run &
+          echo $! > backend.pid
+          sleep 15
+
+      - name: Check Prometheus metrics endpoint
+        run: |
+          curl -s http://localhost:8080/actuator/prometheus | grep 'jvm_memory_used_bytes'
+
+      - name: Stop backend app
+        run: |
+          kill $(cat backend.pid)
+
       - name: Run SonarQube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
