@@ -40,7 +40,7 @@ jobs:
 
       - name: Run backend container with H2 test profile
         run: |
-          docker run -d --rm -p 8080:8080 --name backend-test-container backend-test-image:latest \
+          docker run -d --rm -p 8080:8080 --name backend-test-container backend-test-image:latest --spring.profiles.active=test
           --spring.profiles.active=test
 
       - name: Wait for backend container to be healthy
