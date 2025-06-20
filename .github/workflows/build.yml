@@ -62,9 +62,9 @@ jobs:
       - name: Push backend test success metric to Grafana Cloud
         if: success()
         run: |
-          curl -X POST "https://otlp-gateway-prod-eu-central-1.grafana.net/otlp/v1/metrics" \
+          curl -X POST "https://otlp-gateway-prod-eu-west-2.grafana.net/otlp/v1/metrics" \
             -H "Content-Type: application/json" \
-            -u "${{ secrets.GRAFANA_API_KEY }}:" \
+            -H "Authorization: Bearer ${{ secrets.GRAFANA_API_KEY }}" \
             -d '{
               "resourceMetrics": [
                 {
@@ -78,7 +78,15 @@ jobs:
                             "dataPoints": [
                               {
                                 "asInt": 1,
-                                "timeUnixNano": '"$(date +%s%N)"'
+                                "timeUnixNano": '"$(date +%s%N)"',
+                                "attributes": [
+                                  {
+                                    "key": "status",
+                                    "value": {
+                                      "stringValue": "success"
+                                    }
+                                  }
+                                ]
                               }
                             ]
                           }
@@ -89,7 +97,6 @@ jobs:
                 }
               ]
             }'
-
 
       - name: Stop and remove backend-test container
         run: |
