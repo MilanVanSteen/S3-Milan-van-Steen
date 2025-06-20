@@ -35,21 +35,31 @@ jobs:
       - name: Build and run backend tests
         run: mvn clean verify
 
-      - name: Start backend with H2 test profile
-        run: mvn spring-boot:run -Dspring-boot.run.profiles=test &
-        
-      - name: Wait for backend to be healthy
+      - name: Build Docker image for backend (test)
+        run: docker build -t backend-test-image:latest .
+
+      - name: Run backend container with H2 test profile
+        run: |
+          docker run -d --rm -p 8080:8080 --name backend-test-container backend-test-image:latest \
+          --spring.profiles.active=test
+
+      - name: Wait for backend container to be healthy
         run: |
           for i in {1..30}; do
             if curl -s http://localhost:8080/actuator/health | grep -q UP; then
-              echo "Backend is healthy!"
+              echo "Backend container is healthy!"
               break
             else
-              echo "Waiting for backend to be healthy..."
+              echo "Waiting for backend container to be healthy..."
               sleep 5
             fi
           done
 
+      - name: Run ZAP Baseline Scan
+        run: |
+          docker run -v ${{ github.workspace }}/zap_reports:/zap/wrk/:rw -t zaproxy/zap-stable \
+            zap-baseline.py -t http://host.docker.internal:8080 -r zap_report.html
+      
       - name: Run Pushgateway container
         run: |
           docker run -d --name pushgateway -p 9091:9091 prom/pushgateway
@@ -83,8 +93,9 @@ jobs:
 
           echo "Pushing metric ${METRIC_NAME}=${METRIC_VALUE} to Pushgateway..."
 
-          echo -e "# TYPE ${METRIC_NAME} gauge\n${METRIC_NAME} ${METRIC_VALUE}" | \
-            curl --fail -v --data-binary @- "${PUSHGATEWAY_URL}/metrics/job/${JOB_NAME}/instance/${INSTANCE_NAME}"
+          echo -e "# TYPE ci_duration_seconds gauge\nci_duration_seconds ${METRIC_VALUE}" | \
+          curl --fail -v -H "Content-Type: text/plain" --data-binary @- "${PUSHGATEWAY_URL}/metrics/job/${JOB_NAME}/instance/${INSTANCE_NAME}"
+
 
           echo "Waiting 2 seconds for Pushgateway to register metric..."
           sleep 2
@@ -100,9 +111,6 @@ jobs:
             echo "SUCCESS: Metric '${METRIC_NAME}' found in Pushgateway metrics:"
             echo "$METRIC_FOUND"
           fi
-          
-          # Check metrics for your job and instance specifically
-          curl -s http://localhost:9091/metrics/job/ci/instance/github-runner
 
 
       - name: Verify metric after push
