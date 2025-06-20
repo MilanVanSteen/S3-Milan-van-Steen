@@ -64,7 +64,7 @@ jobs:
         run: |
           curl -X POST "https://otlp-gateway-prod-eu-west-2.grafana.net/otlp/v1/metrics" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.GRAFANA_API_KEY }}" \
+            -u "${{ secrets.GRAFANA_API_KEY }}:"
             -d '{
                   "resourceMetrics": [
                     {
