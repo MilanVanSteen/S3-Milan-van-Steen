@@ -40,7 +40,7 @@ jobs:
 
       - name: Run backend container with H2 test profile
         run: |
-          docker run -d --rm -p 8080:8080 --name backend-test-container backend-test-image:latest --spring.profiles.active=test
+          docker run -d -p 8080:8080 --name backend-test-container backend-test-image:latest --spring.profiles.active=test
 
       - name: Wait for backend container to be healthy
         run: |
@@ -158,6 +158,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+
+      - name: Stop and remove backend-test container
+        run: |
+          docker stop backend-test-container || true
+          docker rm backend-test-container || true
 
       - name: Build Docker image for backend
         run: docker build -t milanvansteen/s3-milan-van-steen-backend:latest .
