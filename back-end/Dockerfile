@@ -15,4 +15,5 @@ RUN ./mvnw package -DskipTests
 EXPOSE 8080
 
 # Run the app (adjust .jar name if needed)
-CMD ["java", "-jar", "target/back-end-0.0.1-SNAPSHOT.jar"]
+CMD java -jar target/back-end-0.0.1-SNAPSHOT.jar
+
