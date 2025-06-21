@@ -1,4 +1,4 @@
-name: Build, Test, SonarQube, Cypress E2E, and Docker Push
+name: Build, Test, SonarQube, Minotor, Cypress E2E, and Docker Push
 
 on:
   push:
@@ -46,7 +46,7 @@ jobs:
       - name: Calculate backend build duration and push metric
         run: |
           duration=$(( ${{ steps.backend_build_end.outputs.end_time }} - ${{ steps.backend_build_start.outputs.start_time }} ))
-          echo "ci_backend_build_duration_seconds $duration" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/build-backend
+          echo "ci_backend_build_duration_seconds $duration" | curl -v --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/build-backend
       
       - name: Build Docker image for backend (test)
         run: docker build -t backend-test-image:latest .
@@ -75,20 +75,33 @@ jobs:
       - name: Push backend test success metric to Pushgateway via ngrok
         if: success()
         run: |
-          echo "ci_backend_tests_passed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
+          echo "ci_backend_tests_passed 1" | curl -v --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
 
       - name: Push backend test failure metric to Pushgateway
         if: failure()
         run: |
-          echo "ci_backend_tests_failed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
+          echo "ci_backend_tests_failed 1" | curl -v --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
 
       - name: Stop and remove backend-test container
         run: |
           docker stop backend-test-container || true
           docker rm backend-test-container || true
 
+      - name: Record backend Docker build start time
+        id: backend_docker_build_start
+        run: echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
+
       - name: Build Docker image for backend
         run: docker build -t milanvansteen/s3-milan-van-steen-backend:latest .
+
+      - name: Record backend Docker build end time
+        id: backend_docker_build_end
+        run: echo "end_time=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Calculate backend Docker build duration and push metric
+        run: |
+          duration=$(( ${{ steps.backend_docker_build_end.outputs.end_time }} - ${{ steps.backend_docker_build_start.outputs.start_time }} ))
+          echo "ci_backend_docker_build_duration_seconds $duration" | curl -v --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/build-backend-docker
 
       - name: Check Docker secrets
         run: |
@@ -145,8 +158,29 @@ jobs:
         env:
           VITE_ENV: ci
 
+      - name: Push frontend E2E test success metric
+        if: success()
+        run: echo "ci_frontend_e2e_tests_passed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-frontend-e2e-tests
+
+      - name: Push frontend E2E test failure metric
+        if: failure()
+        run: echo "ci_frontend_e2e_tests_failed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-frontend-e2e-tests
+
+      - name: Record frontend Docker build start time
+        id: frontend_docker_build_start
+        run: echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
+
       - name: Build Docker image for frontend
         run: docker build -t milanvansteen/s3-milan-van-steen-frontend:latest ./front-end
+
+      - name: Record frontend Docker build end time
+        id: frontend_docker_build_end
+        run: echo "end_time=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Calculate frontend Docker build duration and push metric
+        run: |
+          duration=$(( ${{ steps.frontend_docker_build_end.outputs.end_time }} - ${{ steps.frontend_docker_build_start.outputs.start_time }} ))
+          echo "ci_frontend_docker_build_duration_seconds $duration" | curl -v --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/build-frontend-docker
 
       - name: Check Docker secrets
         run: |
