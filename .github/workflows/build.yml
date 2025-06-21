@@ -58,58 +58,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar -Dsonar.projectKey=MilanVanSteen_S3-Milan-van-Steen -Dsonar.organization=milanvansteen -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-
-      - name: Check if secret exists
-        run: |
-          if [ -z "${{ secrets.GRAFANA_API_KEY }}" ]; then
-            echo "Secret GRAFANA_API_KEY is empty or not set!"
-            exit 1
-          else
-            echo "Secret GRAFANA_API_KEY is set."
-          fi
-
-      - name: Check secret length
-        run:  |
-          echo "Length of secret is: ${{ secrets.GRAFANA_API_KEY }} " | wc -c
       
-      - name: Push backend test success metric to Grafana Cloud
+      - name: Push backend test success metric to Pushgateway via ngrok
         if: success()
         run: |
-          curl -v -X POST "https://otlp-gateway-prod-eu-west-2.grafana.net/otlp/v1/metrics" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer glc_eyJvIjoiMTQ2MzQ0MiIsIm4iOiJzdGFjay0xMjk0NzE2LWludGVncmF0aW9uLWNpLWNkLW1ldHJpY3MtcHVzaC1uZXciLCJrIjoiMDQ2bDBnejRqMzg1RDlZNXZvcktTQ25hIiwibSI6eyJyIjoicHJvZC1ldS13ZXN0LTIifX0=" \
-            -d '{
-              "resourceMetrics": [
-                {
-                  "scopeMetrics": [
-                    {
-                      "metrics": [
-                        {
-                          "name": "ci_backend_tests_passed",
-                          "unit": "1",
-                          "gauge": {
-                            "dataPoints": [
-                              {
-                                "asInt": 1,
-                                "timeUnixNano": '"$(date +%s%N)"',
-                                "attributes": [
-                                  {
-                                    "key": "status",
-                                    "value": {
-                                      "stringValue": "success"
-                                    }
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }'
+          echo "ci_backend_tests_passed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
 
       - name: Stop and remove backend-test container
         run: |

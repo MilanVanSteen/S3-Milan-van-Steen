@@ -1,0 +1,2 @@
+# TYPE job_duration_seconds gauge
+job_duration_seconds 42
