@@ -18,6 +18,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Record backend build start time
+        id: backend_build_start
+        run: echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -35,6 +39,15 @@ jobs:
       - name: Build and run backend tests
         run: mvn clean verify
 
+      - name: Record backend build end time
+        id: backend_build_end
+        run: echo "end_time=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Calculate backend build duration and push metric
+        run: |
+          duration=$(( ${{ steps.backend_build_end.outputs.end_time }} - ${{ steps.backend_build_start.outputs.start_time }} ))
+          echo "ci_backend_build_duration_seconds $duration" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/build-backend
+      
       - name: Build Docker image for backend (test)
         run: docker build -t backend-test-image:latest .
 
@@ -63,6 +76,11 @@ jobs:
         if: success()
         run: |
           echo "ci_backend_tests_passed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
+
+      - name: Push backend test failure metric to Pushgateway
+        if: failure()
+        run: |
+          echo "ci_backend_tests_failed 1" | curl --data-binary @- ${{ secrets.PUSHGATEWAY_URL }}/metrics/job/s3-backend-tests
 
       - name: Stop and remove backend-test container
         run: |
